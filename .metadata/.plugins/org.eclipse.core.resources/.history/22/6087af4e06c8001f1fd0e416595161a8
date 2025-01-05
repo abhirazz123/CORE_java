@@ -1,0 +1,12 @@
+package JAN_01;
+
+  
+class CarStoppedException extends Exception {  
+    public CarStoppedException(String message) {  
+        super(message);  
+    }  
+} 
+
+public class CarUser1 {
+
+}

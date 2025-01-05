@@ -1,0 +1,61 @@
+package OCt_29;
+
+class ShapeCalculator {
+
+    // Method to calculate the area of a square
+    public double calculateArea(int sideLength) {
+        if (sideLength < 0) {
+            throw new IllegalArgumentException("Error: Side length must be non-negative.");
+        }
+        return sideLength * sideLength;
+    }
+
+    // Method to calculate the area of a rectangle
+    public double calculateArea(int length, int width) {
+        if (length < 0 || width < 0) {
+            throw new IllegalArgumentException("Error: Length and width must be non-negative.");
+        }
+        return length * width;
+    }
+
+    // Method to calculate the area of a circle
+    public double calculateArea(double radius) {
+        if (radius < 0) {
+            throw new IllegalArgumentException("Error: Radius must be non-negative.");
+        }
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Elc {
+    public static void main(String[] args) {
+        ShapeCalculator calculator = new ShapeCalculator();
+
+        // Test Case 1: Valid Case - Calculate area of a circle
+        try {
+            double radius = 7.0;
+            double circleArea = calculator.calculateArea(radius);
+            System.out.printf("Area of circle with radius %.1f: %.5f\n", radius, circleArea);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Test Case 2: Invalid Case - Negative side length for square
+        try {
+            int sideLength = -5;
+            double squareArea = calculator.calculateArea(sideLength);
+            System.out.printf("Area of square with side length %d: %.2f\n", sideLength, squareArea);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Test Case 3: Invalid Case - Negative length or width for rectangle
+        try {
+            int length = -5, width = 10;
+            double rectangleArea = calculator.calculateArea(length, width);
+            System.out.printf("Area of rectangle with length %d and width %d: %.2f\n", length, width, rectangleArea);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}

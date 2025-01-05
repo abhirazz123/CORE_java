@@ -1,0 +1,17 @@
+package JAN_01;
+
+CarStoppedException.java  
+@SuppressWarnings("serial")
+class CarStoppedException extends Exception {  
+    public CarStoppedException(String message) {  
+        super(message);  
+    }  
+}
+
+public class CarTest {
+
+	public static void main(String[] args) {
+		
+	}
+
+}

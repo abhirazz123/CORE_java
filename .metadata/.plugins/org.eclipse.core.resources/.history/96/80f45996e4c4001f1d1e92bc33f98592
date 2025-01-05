@@ -1,0 +1,10 @@
+package DIC_28;
+
+public class FunctionalInterfacesDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

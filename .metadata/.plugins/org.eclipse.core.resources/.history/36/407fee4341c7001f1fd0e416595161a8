@@ -1,0 +1,32 @@
+package DEC_31;
+import java.util.*;
+package DEC_31;
+
+public class ArrayStoreExample {
+
+    // Method to demonstrate handling ArrayStoreException
+    public static void storeObjects() {
+        // Initialize an Object array of type String[] with size 5
+        Object[] strings = new String[5];
+
+        try {
+            // Test Case 1: Storing valid String objects
+            strings[0] = "Hello";   // Storing a String
+            strings[1] = "World";   // Storing another String
+            strings[2] = "Java";    // Storing another String
+
+            System.out.println("Objects stored successfully.");
+
+            // Test Case 2: Attempting to store an incompatible type (Integer)
+            strings[3] = 123; // Trying to store an Integer in a String array
+        } catch (ArrayStoreException e) {
+            // Handle ArrayStoreException
+            System.out.println("ArrayStoreException caught: Incompatible type: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        // Call the storeObjects method
+        storeObjects();
+    }
+}

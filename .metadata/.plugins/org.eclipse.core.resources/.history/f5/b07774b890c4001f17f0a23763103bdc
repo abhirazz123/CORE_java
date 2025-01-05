@@ -1,0 +1,19 @@
+package DEC_26;
+
+public class IllegalStateExceptionDemo {
+
+	  static  void throwIllegalException() {
+		System.out.println("main method Stard ... ");
+	   
+		try {
+			throw new IllegalStateException("MyException");
+	  
+			}catch(IllegalStateException objA) {
+				System.out.println("caught : "+ objA);
+			}
+	}
+	  public static void main(String[] args) {
+		System.out.println("Calling throwIllegalException from main method:");
+		throwIllegalException();
+	}
+}

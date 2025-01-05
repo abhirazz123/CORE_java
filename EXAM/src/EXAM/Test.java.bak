@@ -1,0 +1,2 @@
+What will be the output of the following program? 
+class Demo { int a; int b; public Demo(int a, int b) { this.a=a; this.b=b; } } public class Test { public static void main(String[] args) { Demo t = new Demo(); System.out.println(t.a +" "+t.b); } }

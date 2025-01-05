@@ -1,0 +1,24 @@
+package OCt_29;
+
+class calculate
+{
+	public int calculateArea (int sideLength) {
+		if(sideLength<0) {
+			System.out.println("error");
+		}else {
+			return sideLength*sideLength; 
+		}
+		return sideLength;
+	}
+		
+	
+}
+
+public class ShapeCalculator {
+	public static void main(String[] args) 
+	{
+		calculate c = new calculate();
+		c.calculateArea();
+	
+
+}}

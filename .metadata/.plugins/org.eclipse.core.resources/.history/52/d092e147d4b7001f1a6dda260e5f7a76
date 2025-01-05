@@ -1,0 +1,40 @@
+package OCt_29;
+
+class calculate
+{
+	public  int  calculateArea(int sideLength)
+	{
+		if(sideLength < 0) {
+			System.out.println("Error: Side length must be non-negative.");
+		}
+		return sideLength * sideLength ;
+		
+	}
+	public int calculateArea(int length, int width)
+	{
+		if(length<0) {
+			System.out.println("Error: Length and width must be non-negative.");
+		}
+		return length * width;
+		
+	}
+	public double calculateArea(double radius) {
+		return radius*radius*Math.PI;
+		
+	}
+}
+
+
+public class ShapeCalculator 
+{
+
+	public static void main(String[] args) 
+	{
+		calculate C = new calculate();
+		int a= C.calculateArea(8);
+		System.out.println(a);
+		
+
+	}
+
+}

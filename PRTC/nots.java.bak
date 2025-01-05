@@ -1,0 +1,160 @@
+24-12-2024
+-----------
+public class Main 
+{
+	public static void main(String[] args) 
+	{
+		try
+		{
+		  //System.out.println(10/0);
+		  
+		            //OR
+			    
+		  throw	new ArithmeticException("I am dividing no by zero");
+		}
+		catch(Exception e)
+		{
+			System.err.println("Inside Catch Block");
+			System.err.println(e);
+		}
+	}
+}
+
+From the above program it is clear that try block implicitly creating the exception object with the help of JVM and throwing the execption object to the nearest catch block.
+------------------------------------------------------------------
+The main purpose of Exception handling to provide user-friendly message to our end user as shown in the program.
+
+package com.ravi.basic;
+
+import java.util.Scanner;
+
+public class CustomerDemo 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("Welcome client, Welcome to my application");
+		Scanner sc = new Scanner(System.in);
+		
+	    try
+	    {
+	    	System.out.print("Enter the value of a :");
+			int a = sc.nextInt();
+			
+			System.out.print("Enter the value of b :");
+			int b = sc.nextInt();			
+			
+			int result = a/b;
+			System.out.println("Result is :"+result);
+	    }
+	    catch(Exception e)
+	    {
+	    	System.err.println("Sir, Please don't put zero here");
+	    }
+
+	    System.out.println("Thank you client, Have a nice Day!!!");
+	    sc.close();
+	}
+
+}
+
+Exception handlinag = No Abnormal Termination + User-friendly message on wrong input given by the client.
+=================================================================
+Throwable class Method to print Exception :
+--------------------------------------------
+Throwable class has provided the following three methods :
+
+1) public String getMessage() :- It will provide only error message.
+
+2) public void printStackTrace() :-  It will provide the complete details regarding exception like exception class name, exception error message, exception class location, exception method name and exception line number.
+
+3) public String toString() :- It will convert the exception Object into String representation.
+------------------------------------------------------------------
+package com.ravi.basic;
+
+public class PrintStackTrace 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("Main method started...");		
+		try
+		{
+			String x = "NIT";
+			int y = Integer.parseInt(x); 
+			System.out.println(y);	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace(); //For complete Exception details
+			System.out.println("---------------------------");
+			System.out.println("............................");
+			System.err.println(e.getMessage()); //only for Exception message	
+			System.out.println("..............");
+			System.err.println(e.toString());
+		}
+		System.out.println("Main method ended...");		
+
+	}
+
+}
+-----------------------------------------------------------------
+Working with Specific Exception :
+---------------------------------
+While working with exception, in the corresponding catch block we can take Exception (super class) which can handle any type of Exception.
+
+On the other hand we can also take specific type of exception (ArithmetiException, InputMismatchException and so on) which will handle only one type i.e specific type of exception.
+
+package com.ravi.basic;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class SpecificException 
+{
+	public static void main(String[] args) 
+	{
+       System.out.println("Main started");
+		
+		Scanner sc = new Scanner(System.in);
+		
+		try
+		{			
+			System.out.print("Enter your Roll :");
+			int roll = sc.nextInt();  
+			System.out.println("Your Roll is :"+roll);
+			
+		}
+		catch(InputMismatchException e)
+		{
+			e.printStackTrace();
+		}		
+		sc.close();
+		System.out.println("Main ended");
+	}
+}
+------------------------------------------------------------------
+
+public class Main 
+{
+	public static void main(String[] args) 
+	{
+		try
+		{
+			throw new Error();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Catch");
+			System.err.println(e);
+		}
+	}
+}
+
+
+Note : Here the catch block is unable to handle the exception
+ because there is no relation between Error and Exception, both are sub class of Throwable class.
+ 
+ In the corresponding catch block, If we write Error OR Throwable 
+ then we catch block would be executed.
+-----------------------------------------------------------------
+Working with Infinity and Not a number(NaN) :
+--------------------------------------------- 

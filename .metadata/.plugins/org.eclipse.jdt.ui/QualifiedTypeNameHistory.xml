@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.lang.FunctionalInterface"/>
+    <fullyQualifiedTypeName name="DIC_04.instance_of.payment"/>
+    <fullyQualifiedTypeName name="DIC_04.instance_of.cridetCare"/>
+    <fullyQualifiedTypeName name="DIC_04.Method_Hiding.Child"/>
+    <fullyQualifiedTypeName name="Day_16.main"/>
+    <fullyQualifiedTypeName name="java.lang.Math"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="OCt_23.parameter_variable.ThisKeywordExample"/>
+    <fullyQualifiedTypeName name="DEC_05.instance_of.Payment"/>
+    <fullyQualifiedTypeName name="java.lang.IncompatibleClassChangeError"/>
+    <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
+    <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="java.lang.Override"/>
+    <fullyQualifiedTypeName name="DEC_06.Horse"/>
+    <fullyQualifiedTypeName name="javax.net.ssl.ExtendedSSLSession"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+    <fullyQualifiedTypeName name="javax.naming.PartialResultException"/>
+    <fullyQualifiedTypeName name="java.util.InputMismatchException"/>
+    <fullyQualifiedTypeName name="DEC_26.IllegalStateExceptionDemo"/>
+    <fullyQualifiedTypeName name="java.lang.IllegalStateException"/>
+    <fullyQualifiedTypeName name="DIC_28.Employee"/>
+    <fullyQualifiedTypeName name="java.sql.SQLInvalidAuthorizationSpecException"/>
+    <fullyQualifiedTypeName name="javax.accessibility.AccessibleRelation"/>
+    <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
+    <fullyQualifiedTypeName name="java.lang.ArithmeticException"/>
+    <fullyQualifiedTypeName name="java.lang.ArrayIndexOutOfBoundsException"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
+    <fullyQualifiedTypeName name="java.lang.NumberFormatException"/>
+    <fullyQualifiedTypeName name="java.lang.Exception"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,60 @@
+package DIC_28;
+
+
+ class Employee {
+    private String name;
+    private int id;
+    private double salary;
+
+    public Employee(String name, int id, double salary) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+    }
+
+    public void displayEmployeeInfo() {
+        System.out.println("Employee Name: " + name);
+        System.out.println("Employee ID: " + id);
+        System.out.println("Employee Salary: " + salary);
+    }
+
+    public void generatePayStub() {
+        System.out.println("Generating pay stub for " + name + ": $" + salary);
+    }
+}
+
+ class Manager extends Employee {
+    private int numSubordinates;
+
+    public Manager(String name, int id, double salary, int numSubordinates) {
+        super(name, id, salary);
+        this.numSubordinates = numSubordinates;
+    }
+
+    public int getNumSubordinates() {
+        return numSubordinates;
+    }
+
+    @Override
+    public void generatePayStub() {
+        super.generatePayStub();
+        System.out.println("Manager's pay stub includes subordinate management bonus.");
+    }
+}
+
+ 
+public class EmployeeMain {
+    public static void main(String[] args) {
+        Employee employee = new Employee("Abhi", 101, 50000);
+        Manager manager = new Manager("Bob", 201, 70000, 10);
+
+        System.out.println("Employee Details:");
+        employee.displayEmployeeInfo();
+        employee.generatePayStub();
+
+        System.out.println("\nManager Details:");
+        manager.displayEmployeeInfo();
+        manager.generatePayStub();
+        System.out.println("Number of Subordinates: " + manager.getNumSubordinates());
+    }
+}

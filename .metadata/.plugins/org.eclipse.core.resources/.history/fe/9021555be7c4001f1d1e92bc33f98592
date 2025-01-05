@@ -1,0 +1,55 @@
+package DIC_28;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+class User {
+    private String username;
+    private boolean isSubscribed;
+
+    public User(String username, boolean isSubscribed) {
+        this.username = username;
+        this.isSubscribed = isSubscribed;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", isSubscribed=" + isSubscribed +
+                '}';
+    }
+
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+}
+
+class SubscriptionChecker {
+     
+    private static User generateUser() {
+        Supplier<User> userSupplier = () -> new User("JohnDoe", true);
+        return userSupplier.get();
+    }
+
+     
+    private static boolean checkSubscriptionStatus(User user) {
+        Predicate<User> isSubscribed = User::isSubscribed;
+        return isSubscribed.test(user);
+    }
+
+    
+    private static void printUserInformation(User user) {
+        System.out.println("User Information: " + user);
+    }
+
+ 
+    private static void printSubscriptionStatus(User user) {
+        System.out.println("Subscription Status: " + (checkSubscriptionStatus(user) ? "Subscribed" : "Not Subscribed"));
+    }
+
+    public static void main(String[] args) {
+        User user = generateUser();
+        printUserInformation(user);
+        printSubscriptionStatus(user);
+    }
+}
