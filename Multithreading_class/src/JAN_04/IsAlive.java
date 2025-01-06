@@ -1,4 +1,4 @@
-package JAN_04.Multithreading.is_alive;
+package JAN_04;
 class Demo extends Thread{
 	@Override
 	public void run() {
