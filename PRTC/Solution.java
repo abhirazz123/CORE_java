@@ -1,23 +1,70 @@
 import java.util.*;
-import java.io.*;
-
-public class Solution{
-    public static void main(String []argh){
-        Scanner in = new Scanner(System.in);
-        int t=in.nextInt();
-        for(int i=0;i<t;i++){
-            int a = in.nextInt();
-            int b = in.nextInt();
-            int n = in.nextInt();
-            
-            int result = a;  
-            
+public class Solution {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        for(int i = 0; i<=t; i++){
+            try{
+             long x = sc.nextLong();
+             System.out.println(x + " can be fitted in:");
              
-            for (int j = 0; j < n; j++) {  
-                result += (int) Math.pow(2, j) * b;     
-                System.out.print(result + " ");    
-            }  
+             if(x >= Byte.MIN_VALUE && x <= Byte.MAX_VALUE){
+                System.out.println("Byte");
+             }
+                  if(x >= Short.MIN_VALUE && x <= Short.MAX_VALUE){
+                    System.out.println("Short");
+                    
+                }
+                  if(x >= Integer.MIN_VALUE && x <= Integer.MAX_VALUE){
+                    System.out.println("int");
+                }
+                 if(x >= Long.MIN_VALUE && x<= Long.MAX_VALUE){
+                    System.out.println("long");
+                    
+                }
+            }catch(Exception e){
+               System.out.println(sc.next() + " can't be fitted anywhere.");
+            }
         }
         
     }
+    
+ 
 }
+
+
+
+/**
+
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public static void main(String[] argh) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        for (int i = 0; i < t; i++) {
+            try {
+                long x = sc.nextLong();
+                System.out.println(x + " can be fitted in:");
+                if (x >= Byte.MIN_VALUE && x <= Byte.MAX_VALUE) {
+                    System.out.println("* byte");
+                }
+                if (x >= Short.MIN_VALUE && x <= Short.MAX_VALUE) {
+                    System.out.println("* short");
+                }
+                if (x >= Integer.MIN_VALUE && x <= Integer.MAX_VALUE) {
+                    System.out.println("* int");
+                }
+                if (x >= Long.MIN_VALUE && x <= Long.MAX_VALUE) {
+                    System.out.println("* long");
+                }
+            } catch (Exception e) {
+                System.out.println(sc.next() + " can't be fitted anywhere.");
+            }
+        }
+        sc.close();
+    }
+}
+*/

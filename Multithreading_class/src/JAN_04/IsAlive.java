@@ -20,6 +20,9 @@ public class IsAlive
 		Demo d2 = new Demo();
 		
 		d1.start();//java.lang.IllegalThreadStateException 
+		
+		
+
  
 	}
 	

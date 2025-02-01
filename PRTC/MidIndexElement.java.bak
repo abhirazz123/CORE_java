@@ -1,0 +1,29 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class MidIndexElement {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+         
+        int n = scanner.nextInt();
+
+       
+        ArrayList<Integer> positiveNumbers = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int num = scanner.nextInt();
+            if (num >= 0) {
+                positiveNumbers.add(num); // Filter out negative numbers
+            }
+        }
+
+        // Find the mid-index of the filtered array
+        int size = positiveNumbers.size();
+        int midIndex = size / 2 - (size % 2 == 0 ? 1 : 0); // Handle even/odd cases
+
+        // Output the mid-index element
+        System.out.println(positiveNumbers.get(midIndex));
+
+        scanner.close();
+    }
+}
