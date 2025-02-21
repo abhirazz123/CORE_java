@@ -17,7 +17,7 @@ Fisrt Name of Java  : OAK (Tree Name)
       First release : 23rd Jan 1996 (JDK 1.0)
                Java : It is an island in indonesia 
     Official Symbol : Coffee Cup
---------------------------------------------------------------------
+---------------------------------------------------------------
 What is a function ?
 ---------------------
 A function is a self defined block which is used for performing some 
@@ -14604,9 +14604,9 @@ In multitasking multiple tasks can concurrently work with CPU so, our task will 
 Multitasking is further divided into two categories.
 
 a) Process based Multitasking
-b) Thread  based Multitasking
+b) Thread based Multitasking
 
-[Diagram :03-JAN]
+[Diagram : 03-JAN]
 Process based Multitasking :
 ----------------------------
 If a CPU is switching from one subtask(Thread) of one process to another subtask of another process then it is called Process based Multitasking.
@@ -14730,11 +14730,11 @@ public class UserThread
 In the above program, we have two threads, main thread which is responsible to execute main method and Thread-0 thread which is responsible to execute run() method. [04-JAN-25]
 
 In entire Multithreading start() is the only method which is responsible to create a new thread.
------------------------------
-public final boolean isAlive():-
+------------------------------------------------------------------
+public final boolean isAlive() :-
 -----------------------------
 It is a predefined non static method of Thread class through which we can find out whether a thread has started or not ?
-  
+
 As we know a new thread is created/started after calling start() method so if we use isAlive() method before start() method, it will return false but if the same isAlive() method if we invoke after the start() method, it will return true.
 
 We can't restart a thread in java if we try to restart then It will generate an exception i.e java.lang.IllegalThreadStateException
@@ -14743,7 +14743,7 @@ We can't restart a thread in java if we try to restart then It will generate an 
 package com.ravi.is_alive;
 
 class Demo extends Thread
-{ 
+{
 	@Override
 	public void run()
 	{
@@ -14754,7 +14754,6 @@ class Demo extends Thread
 public class IsAlive {
 
 	public static void main(String[] args) 
-
 	{
 		Demo d1 = new Demo();
 		System.out.println("Is child thread started before start() :"+d1.isAlive());
@@ -14762,11 +14761,11 @@ public class IsAlive {
 		d1.start();
 		System.out.println("Is child thread started after start():"+d1.isAlive());
 		
-		d1.start();  //java.lang.IllegalThreadStateException  
+		d1.start();  //java.lang.IllegalThreadStateException 
 	
 	}
 }
---------------------------------------------------------------------------------------
+-------------------------------------------------------------------
 package com.ravi.basic;
 
 class Stuff extends Thread
@@ -14799,7 +14798,7 @@ public class ExceptionDemo
 }
 
 Note :- Here main thread is interrupted due to AE but still child thread will be executed because child threads are executing with separate Stack
------------ 
+-------------------------------------------------------------------
 05-01-2025
 -----------
 WAP to show that when we work with multiple threads then processor will frequently move from one thread to another thread.
@@ -14849,9 +14848,9 @@ public class ThreadLoop
 }
 
 In the above program, Processor is frequently moving from main thread to child thread.
-------------------------------------------- 
+------------------------------------------------------------------
 How to set and get the name of the Thread : 
-------------------------------------------- 
+--------------------------------------------------
 Whenever we create a userdefined Thread in java then by default JVM assigns the name of thread is Thread-0, Thread-1, Thread-2 and so on.
 
 If a user wants to assign some user defined name of the Thread, then Thread class has provided a predefined method called setName(String name) to set the name of the Thread.
@@ -14861,7 +14860,7 @@ On the other hand we want to get the name of the Thread then Thread class has pr
 public final void setName(String name)  //setter
 
 public final String getName()  //getter
----------------------------------------
+------------------------------------------------------------------
 package com.ravi.basic;
 class DoStuff extends Thread  
 {
@@ -16446,5 +16445,3628 @@ Note : In the above program, Generally when child1 thread is
        in running state then it will give a chance to child2
        so most of the time child1 will execute for single cycle inside the loop.
 ------------------------------------------------------------
+20-01-2025
+-----------
 ** Inter Thread Communication(ITC) :
------------------------------------- 
+------------------------------------
+It is a mechanism to communicate or co-ordinate between two synchronized threads within the context to achieve a particular task.
+
+In ITC we put a thread into wait mode by using wait() method and other thread will complete its corresponding task, after completion of the task it will call notify() method so the waiting thread will get a notification to complete its remaining task.
+
+ITC can be implemented by the following method of Object class.
+
+1) public  final void wait() throws InterruptedException
+
+2) public native final void notify()
+
+3) public native final void notifyAll()
+
+
+public  final void wait() throws InterruptedException :-
+-------------------------------------------------------------
+It is a predefined non static method of Object class. We can use this method from synchronized area only otherwise we will get java.lang.IllegalMonitorStateException.
+
+It will put a thread into temporarly waiting state and it will release the Object lock, It will remain in the wait state till another thread provides a notification message on the same object, After getting the lock (not notification message), It will wake up and it will complete its remaining task.
+
+public native final void notify() :-
+-------------------------------------
+It will wake up the single thread that is waiting on the same object.It will not release the lock , once synchronized area is completed then only lock will be released.
+
+Once a waiting thread(wait()) will get the notification from the another thraed using notify()/notifyAll() method then the waiting thread will move from Blocked state to Runnable state(Ready to run state) but it will continue its execution after getting the lock.
+
+public native final void notifyAll() :-
+----------------------------------------
+It will wake up all the threads which are waiting on the same object.It will not release the lock , once synchronized area is completed then only lock will be released.
+
+*Note :- wait(), notify() and notifyAll() methods are defined in Object class but not in Thread class because these methods are related to lock(because we can use these methods from the synchronized area ONLY) and Object has a lock so, all these methods are defined inside Object class.
+
+
+*** Difference between sleep() and wait() [20-JAN-25]
+
+The following program explains we should use these methods from synchronized area only otherwise we will get java.lang.IllegalMonitorStateException.
+
+package com.ravi.itc;
+
+
+public class ITCDemo1 
+{
+	public  static void main(String[] args) throws InterruptedException 
+	{
+	    Object obj = new Object();
+	    obj.wait();
+	
+	}
+	
+	
+
+}
+--------------------------------------------------------------
+package com.ravi.itc;
+
+class Test extends Thread
+{
+	private int val = 0;  // 1  3  6  10  15  21
+	
+	@Override
+	public void run()
+	{
+		for(int i=1; i<=100; i++)
+		{
+			val = val + i;   
+		}
+		
+		
+	}
+	
+	public int getVal()
+	{
+		return this.val;
+	}
+	
+	
+	
+}
+
+public class ITCDemo2 
+{
+	public static void main(String[] args) throws InterruptedException 
+	{
+       System.out.println("Main Thread Started...");
+       
+       Test t1 = new Test();
+       t1.start();
+       
+      Thread.sleep(1);
+       
+       System.out.println(t1.getVal());
+       
+       System.out.println("Main Thread ended!!!");
+      
+	}
+
+}
+
+
+Note : In the above program, there is no co-ordination between 
+main thread and child thread so the value of val will change based on loop iteration so output is un-predictable
+---------------------------------------------------------------
+
+package com.ravi.itc;
+
+class Demo extends Thread
+{
+	private int val = 0;
+	
+	@Override
+	public void run()
+	{
+		//child thread will wait for Object lock
+		synchronized(this)
+		{
+			System.out.println("Loop Started");
+			for(int i=1; i<=10; i++)
+			{				
+				val = val + i;
+			}
+			System.out.println("Sending notification to main thread");
+			notify();
+			
+		}
+	}
+	
+	public int getVal()
+	{
+		return this.val;
+	}
+	
+	
+	
+	
+	
+}
+
+public class ITCDemo3 {
+
+	public static void main(String[] args) throws InterruptedException 
+	{		
+		Demo d1 = new Demo();
+		d1.start();
+		
+				
+		synchronized(d1)
+		{
+			//Suspended
+			System.out.println("Waiting for child thread to complete");
+			System.out.println("Lock is released");
+			d1.wait();
+			System.out.println("Main Thread wake up");
+			System.out.println(d1.getVal());
+		}
+		
+		
+	}
+
+}
+
+
+Note : Here we have co-ordination between main thread and child thread so we will get predicatable output.
+-------------------------------------------------------------
+21-01-2025
+-----------
+//Program on ITC where son can withdraw the amount and father
+  can deposit the amount.
+
+package com.ravi.itc;
+
+class Customer
+{
+	private double balance = 10000;
+	
+	public synchronized void withdraw(double amount) 
+	{
+		System.out.println("Son is going to withdraw...");
+		
+		if(amount > balance)
+		{
+			System.out.println("Less amount, Waiting for deposit..");
+			try
+			{
+				wait();  //lock is released
+				System.out.println("Got Notification, Going for withdraw");
+			}
+			catch(InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		this.balance = this.balance - amount;
+		System.out.println("Amount after withdraw is :"+this.balance);
+		
+	}
+	
+	
+	public synchronized void deposit(double amount)
+	{
+	   System.out.println("Going to deposit the amount...");
+	   this.balance = this.balance + amount;
+	   System.out.println("Deposit Completed, Balance after deposit is :"+this.balance);
+	   notify();
+	}
+	
+}
+
+public class ITCDemo4 
+{
+	public static void main(String[] args)
+	{
+		Customer cust = new Customer();
+		
+		Thread son = new Thread()
+		{
+		   @Override
+		   public void run()
+		   {
+			   cust.withdraw(15000);
+		   }
+		};
+		
+		son.start();
+		
+		Thread father = new Thread()
+		{
+		   @Override
+		   public void run()
+		   {
+			   cust.deposit(10000);
+		   }
+		};			
+		  
+		father.start();
+	}
+
+}
+------------------------------------------------------------
+//Program to show how to cancel and book the ticket on the same TicketSystem  object
+
+package com.ravi.itc;
+
+class TicketSystem 
+{
+    private int availableTickets = 5;   //availableTickets = 5
+    
+    public synchronized void bookTicket(int numberOfTickets) //numberOfTickets = 4
+    {
+        while (availableTickets < numberOfTickets) // 5  <  4
+        {
+           System.out.println("Not enough tickets available, Waiting for cancellation...");
+            try 
+            {
+                wait(); 
+            }
+            catch (InterruptedException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+        availableTickets = availableTickets - numberOfTickets;  //5 - 4
+        
+        System.out.println("Booked " + numberOfTickets + " ticket(s). Remaining tickets: " + availableTickets);
+        notify(); 
+              
+    }
+
+    
+  public synchronized void cancelTicket(int numberOfTickets)//numberOfTickets = 2 
+    {
+        availableTickets = availableTickets + numberOfTickets;
+        System.out.println("Canceled " + numberOfTickets + " ticket(s). Available tickets: " + availableTickets);
+        notify(); 
+    }
+}
+
+
+public class ITCDemo5 
+{
+    public static void main(String[] args) 
+    {
+        TicketSystem ticketSystem = new TicketSystem(); //lock is available
+
+        Thread bookingThread = new Thread()
+        {
+        	@Override
+            public void run() 
+        	{
+                int[] ticketsToBook = {2, 4, 4};  
+                
+                for (int ticket : ticketsToBook) //ticket = 4
+                {
+                    ticketSystem.bookTicket(ticket);
+                    try 
+                    {
+                        Thread.sleep(1000); // give some time b/w booking
+                    } 
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+        	 }        	
+        };
+        bookingThread.start();
+        
+        Thread cancellationThread = new Thread()
+       	{
+        	@Override
+            public void run() 
+        	{
+                int[] ticketsToCancel = {1, 3, 2};
+                
+                for (int ticket : ticketsToCancel) //ticket = 2
+                {
+                    ticketSystem.cancelTicket(ticket);
+                    try 
+                    {
+                        Thread.sleep(1500);  // give some time b/w cancellation
+                    } 
+                    catch (InterruptedException e) 
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        cancellationThread.start();
+        
+        
+        
+        
+    }
+}
+
+Note : From the above program it is clear that we can use 
+       notify() and wait(), both the methods in the a userdefined method together.
+-------------------------------------------------------------
+//Program on notifyAll() method :
+---------------------------------
+package com.ravi.itc;
+
+class Resource 
+{
+    private boolean flag = false;
+
+    public synchronized void waitMethod() //child1  child2  child3
+	{
+		System.out.println("Wait");  
+		
+       	while (!flag)
+		{
+          try 
+		  {
+             System.out.println(Thread.currentThread().getName() + " is waiting...");
+             System.out.println(Thread.currentThread().getName()+" is Waiting for Notification");
+             wait(); 
+          } 
+		  catch (InterruptedException e) 
+		  {
+                e.printStackTrace();
+          }
+        }
+        System.out.println(Thread.currentThread().getName() + " thread completed!!");
+    }
+
+    
+    public synchronized void setMethod() 
+	{
+		System.out.println("notifyAll");
+		this.flag = true;
+        System.out.println(Thread.currentThread().getName() + " has make flag value as a true");
+        notifyAll(); // Notify all waiting threads that the signal is set
+    }
+}
+
+public class ITCDemo6
+{
+    public static void main(String[] args) 
+		{   	
+    	
+    	
+        Resource r1 = new Resource(); //lock is created
+
+        Thread t1 = new Thread(() -> r1.waitMethod(), "Child1");
+		Thread t2 = new Thread(() -> r1.waitMethod(), "Child2");
+		Thread t3 = new Thread(() -> r1.waitMethod(), "Child3");
+
+		t1.start();
+        t2.start();
+        t3.start();
+       
+		
+		Thread setter = new Thread(() -> r1.setMethod(), "Setter_Thread");
+      
+		   try 
+			{
+	            Thread.sleep(2000);
+	        } 
+			catch (InterruptedException e) 
+			{
+	            e.printStackTrace();
+	        }
+		
+	       setter.start();
+    }
+}
+-------------------------------------------------------------
+22-01-2025
+-----------
+ThreadGroup :
+------------
+It is a predefined class available in java.lang Package.
+
+By using ThreadGroup class we can put 'n' number of threads into a single group to perform some common/different operation.
+
+By using ThreadGroup class constructor, we can assign the name of group under which all the thread will be executed.
+
+ThreadGroup tg = new ThreadGroup(String groupName);
+
+ThreadGroup class has provided the following methods :
+
+public String getName() : To get the name of the Group
+
+pubic int activeCount() : How many threads are alive and running under that particular group.
+
+Thread class has provided constructor to put the thread into particular group.
+
+Thread t1 = new Thread(ThreadGroup tg, Runnable target, String name);
+
+By using ThreadGroup class, multiple threads will be executed under single group.
+------------------------------------------------------------------
+package com.ravi.group;
+
+class Foo implements Runnable
+{
+	@Override
+	public void run() 
+	{
+		String name = Thread.currentThread().getName();
+	    for(int i=1; i<=3; i++)
+	    {
+	    	System.out.println("i value is :"+i+" by "+name+ " thread");
+	    	try
+	    	{
+	    		Thread.sleep(500);
+	    	}
+	    	catch(InterruptedException e)
+	    	{
+	    		e.printStackTrace();
+	    	}
+	    }
+		
+	}	
+}
+ 
+public class ThreadGroupDemo1 
+{
+  public static void main(String[] args) throws InterruptedException 
+  {
+	  
+	 ThreadGroup tg = new ThreadGroup("Batch 39");
+	 
+	 Thread t1 = new Thread(tg, new Foo(), "Scott");
+	 Thread t2 = new Thread(tg, new Foo(), "Smith");
+	 Thread t3 = new Thread(tg, new Foo(), "Alen");
+	 Thread t4 = new Thread(tg, new Foo(), "John");
+	 Thread t5 = new Thread(tg, new Foo(), "Martin");
+	 
+	 t1.start();
+	 t2.start();
+	 t3.start();
+	 t4.start();
+	 t5.start();
+	 
+	 //Thread.sleep(5000);
+	 
+	System.out.println("How many threads are active under Batch 39 group :"+tg.activeCount());
+	 
+	System.out.println("Name of the the Group is :"+tg.getName());
+	 
+	 
+	 
+  }
+}
+------------------------------------------------------------------
+package com.ravi.group;
+
+class TatkalTicket implements Runnable
+{
+	@Override
+	public void run() 
+	{
+		String name = Thread.currentThread().getName();
+		System.out.println("Tatkal ticket booked by :"+name);		
+	}	
+}
+
+class PremiumTatkal implements Runnable
+{
+	@Override
+	public void run() 
+	{
+		String name = Thread.currentThread().getName();
+		System.out.println("Premium Tatkal ticket booked by :"+name);
+		
+	}	
+}
+
+public class ThreadGroupDemo3 
+{
+	public static void main(String[] args) 
+	{
+       ThreadGroup tatkal = new ThreadGroup("Tatkal");
+       ThreadGroup premimumTatkal = new ThreadGroup("Premimum_Tatkal");
+       
+       
+       Thread t1 = new Thread(tatkal, new TatkalTicket(), "t1");
+       Thread t2 = new Thread(tatkal, new TatkalTicket(), "t2");
+       Thread t3 = new Thread(tatkal, new TatkalTicket(), "t3");
+       t1.start();  t2.start();  t3.start();
+		
+       
+       Thread t4 = new Thread(premimumTatkal,new PremiumTatkal(), "t4");
+       Thread t5 = new Thread(premimumTatkal,new PremiumTatkal(), "t5");
+       Thread t6 = new Thread(premimumTatkal,new PremiumTatkal(), "t6");
+       t4.start(); t5.start(); t6.start();
+       
+		
+	}
+
+}
+------------------------------------------------------------------
+package com.ravi.group;
+
+public class ThreadGroupDemo2 {
+
+	public static void main(String[] args) 
+	{
+		Thread t = Thread.currentThread();
+		System.out.println(t.toString());
+	}
+
+}
+
+Note : Here we will get the output as Thread[#1,main,5,main]
+
+1     :  Id of the main thread
+main  :  Name of the main thread
+5     :  default priority of main thread
+main  :  Group name, under which main thread is running
+=================================================================
+Daemon Thread [Service Level Thread]
+------------------------------------
+Daemon thread is a low- priority thread which is used to provide background maintenance.  
+
+The main purpose of of Daemon thread to provide services to the user thread.              
+
+JVM can't terminate the program till any of the non-daemon (user) thread is active, once all the user thread will be completed then JVM will automatically terminate all Daemon threads, which are running in the background to support user threads.
+
+The example of Daemon thread is Garbage Collection thread, which is running in the background for memory management.
+
+In order to make a thread as a  Daemon thread , we should use setDaemon(true) which is a non static method Thread class.
+
+public class DaemonThreadDemo1 
+{
+  public static void main(String[] args) 
+	{
+	    System.out.println("Main Thread Started...");
+
+        Thread daemonThread = new Thread(() -> 
+		{
+            while (true) 
+			{
+                System.out.println("Daemon Thread is running...");
+                try 
+				{
+                    Thread.sleep(1000);
+                } 
+				catch (InterruptedException e) 
+				{
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        daemonThread.setDaemon(true); 
+        daemonThread.start();
+
+        
+        Thread userThread = new Thread(() -> 
+		{
+            for (int i=1; i<=19; i++) 
+			{
+                System.out.println("User Thread: " + i);
+                try 
+				{
+                    Thread.sleep(2000);
+                } 
+				catch (InterruptedException e) 
+				{
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        userThread.start();
+
+        System.out.println("Main Thread Ended...");
+    }
+}
+--------------------------------------------------------------
+public void interrupt() Method of Thread class :
+--------------------------------------------------
+It is a predefined non static method of Thread class. The main purpose of this method to disturb the execution of the Thread, if the thread is in waiting or sleeping state.
+
+Whenever a thread is interupted then it throws InterruptedException so the thread (if it is in sleeping or waiting mode) will get a chance to come out from a particular logic.
+
+Points :-
+---------
+If we call interrupt method and if the thread is not in sleeping or waiting state then it will behave normally.
+
+If we call interrupt method and if the thread is in sleeping or waiting state then we can stop the thread  gracefully.
+
+*Overall interrupt method is mainly used to interrupt the
+thread safely so we can manage the resources easily.
+
+Methods :
+---------
+1) public void interrupt () :- Used to interrupt the Thread but the thread must be in sleeping or waiting mode.
+
+2) public boolean isInterrupted() :- Used to verify whether thread is interrupted or not.
+--------------------------------------------------------------
+class Interrupt extends Thread
+{
+   @Override
+   public void run()
+	{
+	   Thread t = Thread.currentThread();
+	   System.out.println(t.isInterrupted()); 
+       
+	   for(int i=1; i<=5; i++)
+		{
+		   System.out.println(i);  
+		   
+           try
+		   {
+			Thread.sleep(1000);
+		   }
+		   catch (Exception e)
+		   {
+			   System.err.println("Thread is Interrupted ");
+			   e.printStackTrace();
+		   }
+		   
+		}
+	}
+}
+public class  InterruptThread
+{
+	public static void main(String[] args) 
+	{
+        Interrupt it = new Interrupt();
+		System.out.println(it.getState());  //NEW
+		it.start();
+		//it.interrupt();  //main thread is interrupting the child thread	
+	}
+}
+--------------------------------------------------------------
+23-01-2025
+-----------
+class Interrupt extends Thread
+{
+   @Override
+   public void run()
+	{
+	   try
+	   {
+	    Thread.currentThread().interrupt(); //self interruption
+
+	   for(int i=1; i<=10; i++)
+		{
+		   System.out.println("i value is :"+i);
+		   Thread.sleep(1000);
+		}
+
+	   }
+		catch (InterruptedException e)
+		{
+			System.err.println("Thread is Interrupted :"+e);
+		}
+		System.out.println("Child thread completed...");
+	}
+}
+public class  InterruptThread1
+{
+	public static void main(String[] args) 
+	{	
+		Interrupt it = new Interrupt();
+		it.start();	
+	}
+}
+
+Note : Here child thread is interrupting itself hence for loop 
+       will be executed only one time.
+---------------------------------------------------------------
+public class InterruptThread2
+{
+    public static void main(String[] args) 
+	{
+        Thread thread = new Thread(new MyRunnable());
+        thread.start();
+     
+        try 
+		{
+          Thread.sleep(3000); //Main thread is waiting for 3 Sec
+        } 
+		catch (InterruptedException e) 
+		{
+            e.printStackTrace();
+        }
+        
+       thread.interrupt();  
+    }
+}
+
+class MyRunnable implements Runnable 
+{
+    @Override
+    public void run() 
+	{
+        try 
+		{
+            while (!Thread.currentThread().isInterrupted())
+			{
+                System.out.println("Thread is running by locking the resource");
+                Thread.sleep(500);
+            }
+        } 
+		catch (Exception e) 
+		{
+            System.out.println("Thread interrupted gracefully.");
+        } 
+		finally 
+		{
+            System.out.println("Thread resource can be release here.");
+        }
+    }
+}
+
+Note : If main thread will not interrupt the child thread then child thread will not come out from infinite while loop hance 
+the lock will not be released.
+--------------------------------------------------------------
+Deadlock :
+------------
+It is a situation where two or more than two threads are in blocked state forever, here threads are waiting to acquire another thread resource without releasing it's own resource.
+
+This situation happens when multiple threads demands same resource without releasing its own attached resource so as a result we get Deadlock situation and our execution of the program will go to an infinite state as shown in the diagram. (23-JAN-25)
+
+public class DeadlockExample
+	{
+  public static void main(String[] args) 
+	 {
+     String resource1 = new String("Ameerpet");  //(L1)
+     String resource2 = new String("S R Nagar"); //(L2) 
+
+    // t1 tries to lock resource1(L1) then resource2(L2)
+
+    Thread t1 = new Thread() 
+		{
+	  @Override
+      public void run() 
+		  {
+			  synchronized (resource1) 
+				  {
+			   System.out.println("Thread 1: locked resource 1");
+			      try 
+				   { 
+				   Thread.sleep(1000);
+				   } 
+				   catch (Exception e) 
+				   {}				  
+				
+				//t1 thread is waiting here for Lock2
+			   synchronized (resource2) //Nested synchronized block
+			   {
+				System.out.println("Thread 1: locked resource 2");
+			   }
+             }
+      }
+    };
+
+
+    // t2 tries to lock resource2 then resource1
+    Thread t2 = new Thread() 
+	{
+      @Override
+      public void run() 
+	  {
+        synchronized (resource2) 
+			{
+          System.out.println("Thread 2: locked resource 2");
+              try 
+			  { 
+			  Thread.sleep(1000);
+			  } 
+			  catch (Exception e) 
+			  {}
+			//t2 thread will wait for L1  (Resourse1)
+          synchronized (resource1) //Nested synchronized block
+		  {
+            System.out.println("Thread 2: locked resource 1");
+          }
+        }
+      }
+    };    
+    t1.start();
+    t2.start();
+  }
+}
+
+Note : Here this situation is known as Deadlock situation because both the threads are waiting for infinite state.
+---------------------------------------------------------------
+New Thread life cycle :
+-----------------------
+New thread life cycle which is available from java 5V. Java 
+software people has provided an enum called State (State is an
+enum which is defined inside Thread class)
+
+A thread is well known for independent execution, During the life cycle of a thread it passes through different states which are as follows :
+
+1) NEW (Thread Object is created)
+2) RUNNABLE (Already Started but waiting for Processor time)
+3) BLOCKED (Waiting for lock/Monitor)
+4) WAITING (Waiting for another thread without timeout time)
+5) TIMED_WAITING (Waiting with timeout time)
+6) TERMINATED (Executed run())
+
+NEW :
+-----
+Whenever we create a thread instance(Thread Object) a thread comes to new state OR born state. New state does not mean that the Thread has started yet only the object or instance of Thread has been created.
+
+RUNNABLE :
+-----------
+Whenever we call start() method on thread object, A thread moves to Runnable state i.e Ready to run state. Here the thread is considered "alive," but it doesn’t immediately start execution unless the CPU scheduler assigns it time.
+
+BLOCKED :
+---------
+If a thread is waiting for object lock OR monitor to enter inside synchronized area OR re-enter inside synchronized area then it is in blocked state.
+
+WAITING :
+---------
+A thread in the waiting state is waiting for another thread to
+perform a particular action but WITHOUT ANY TIMEOUT time. A thread that has called wait() method on an object is waiting for another thread to call notify() or notifyAll() on the same object OR A thread that has called join() method is waiting for a specified thread to terminate.
+
+TIMED_WAITING :
+---------------
+A thread in the timed_waiting state, if we call any method which put the thread into temporarly timed_waiting state but WITH POSITIVE TIMEOUT period like sleep(lons ms), join(long ms), wait(long ms) then the Thread is considered as Timed_Waiting state.
+
+TERMINATED :
+-------------
+The thread has successuflly completed it's execution in the separate stack memory.
+---------------------------------------------------------------
+24-01-2025
+----------
+Volatile Keyword in java :
+--------------------------
+While working in a multithreaded environment multiple threads can perform read and write operation with common variable (chances of Data inconsistency so use synchronized OR AtomicInteger) concurrently.
+
+In order to store the value temporarly, Every thread is having local cache memory (PC Register) but if we declare a variable with volatile modifier then variable's value is not stored in a thread's local cache; it is always read from the main memory.
+
+So the conclusion is, a volatile variable value is always read from and written directly to the main memory, which ensures that changes made by one thread are visible to all other threads immediately.
+
+
+package com.nit.testing;
+
+class SharedData
+{
+    private volatile boolean flag = false;
+
+    public void startThread()
+    {
+        Thread writer = new Thread(() ->
+        {
+            try
+            {
+                Thread.sleep(1000);  //Writer thread will go for 1 sec waiting state
+                flag = true;
+                System.out.println("Writer thread make the flag value as true");
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        });
+
+        Thread reader = new Thread(() ->
+        {
+            while (!flag)  //From cache memory still the value of flag is false
+            {
+               
+            }
+            System.out.println("Reader thread got the updated value");
+        });
+
+        writer.start();
+        reader.start();
+    }
+
+}
+
+public class VolatileExample
+{    
+    public static void main(String[] args)
+    {
+        new SharedData().startThread();
+    }
+}
+
+Note : In the above program, remove the volatile keyword and verify the output.
+----------------------------------------------------------------
+Methods of Object class :
+-------------------------
+protected native Object clone() throws CloneNotSupportedException
+---------------------------------------------------------------
+Object cloning in Java is the process of creating an exact copy of the original object. In other words, it is a way of creating a new object by copying all the data and attributes from the original object. 
+
+The clone method of Object class creates an exact copy of an object.
+
+In order to use clone() method , a class must implements Clonable interface because we can perform cloning operation on Cloneable objects only [JVM must have additional information] otherwise cloning opertion is not possible and JVM will throw an exception at runtime java.lang.CloneNotSupportedException
+
+We can say an object is a Cloneable object if the corresponding class implements Cloneable interface.
+
+It throws a checked Exception i.e CloneNotSupportedException
+
+Note :- clone() method is not the part of Clonable interface[marker interface], actually it is the method of Object class.
+
+clone() method of Object class follows deep copy concept so hashcode will be different as well as if we modify one object content then another object content will not be modified.
+
+clone() method of Object class has protected access modifier so we need to override clone() method in sub class.
+
+Steps we need to follow to perform clone operation :
+----------------------------------------------------
+1) The class must implements Cloneable interface
+2) Override clone method [throws OR try catch]
+3) In this Overridden method call Object class clone method
+4) Perform downcasting at the time creating duplicate object
+5) Two different objects are created [deep copy]
+----------------------------------------------------------------
+package com.ravi.clone_method;
+
+class Employee implements Cloneable
+{
+	private Integer employeeId;
+	private String employeeName;
+	
+	public Employee(Integer employeeId, String employeeName) {
+		super();
+		this.employeeId = employeeId;
+		this.employeeName = employeeName;
+	}
+		
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		return super.clone();
+	}	
+
+	public void setEmployeeId(Integer employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+
+	@Override
+	public String toString() 
+	{
+				
+		return "Employee [employeeId=" + employeeId + ", employeeName=" + employeeName + "]";
+	}	
+	
+}
+public class CloneMethodDemo 
+{
+	public static void main(String[] args) throws CloneNotSupportedException 
+	{
+		Employee e1 = new Employee(111,"Scott");
+		
+		Employee e2 = (Employee) e1.clone();  //Down-casting
+		e2.setEmployeeId(999);
+		e2.setEmployeeName("Raj");
+		
+		System.out.println(e1);
+		System.out.println(e2);
+		
+		System.out.println(e1.hashCode());
+		System.out.println(e2.hashCode());
+		
+
+	}
+
+}
+================================================================
+protected void finalize() throws Throwable :
+--------------------------------------------
+It is a predefined method of Object class.
+
+Garbage Collector automatically call this method just before an object is eligible for garbage collection to perform clean-up activity.
+
+Here clean-up activity means closing the resources associated with that object like file connection, database connection, network connection and so on we can say resource de-allocation.
+
+Note :- JVM calls finalize method only one per object.
+
+         This method is deprecated from java 9V.
+
+
+package com.ravi.finalize;
+
+record Product(Integer productId)
+{
+	@Override
+	public void finalize()
+	{
+		System.out.println("Product Object is eligible for GC");
+	}
+}
+public class FinalizeDemo
+{
+	public static void main(String[] args) throws InterruptedException 
+	{
+        Product p1 = new Product(111);
+        System.out.println(p1);
+        
+        p1 = null;
+        
+        System.gc(); //Explicitly calling GC
+        
+        Thread.sleep(3000);
+        
+        System.out.println(p1);
+
+	}
+
+}
+----------------------------------------------------------------
+25-01-2025
+-----------
+** What is the difference final, finally and finalize() method :
+
+
+final :- It is a keyword which is used to provide some kind of          restriction like class is final, Method is
+         final,variable is final.
+
+finally :- if we open any resource as a part of try block then       that particular resource must be closed inside 
+	   finally block otherwise program will be terminated ab-normally and the corresponding resource will not be closed (because the remaining lines of try block will not be executed)
+
+finalize() :- It is a method which is automatically called by JVM just before object  destruction so if any resource (database, file and network) is associated with  that particular object then it will be closed  or de-allocated by JVM by calling finalize().
+
+-----------------------------------------------------------------
+Collections Framework : (40-45% IQ)
+-----------------------------------
+Collections framework is nothing but handling individual Objects(Collection Interface) and Group of objects(Map interface).
+
+We know only object can move from one network to another network.  
+
+A collections framework is a class library to handle group of Objects.
+
+It is implemented by using java.util package.
+
+It provides an architecture to store and manipulate group of objects.
+
+All the operations that we can perform on data such as searching, sorting, insertion and deletion can be done by using collections framework because It is the data structure of Java.
+
+The simple meaning of collections is single unit of Objects.
+-------------------------------------------------------------
+It provides the following sub interfaces :
+
+1) List (Accept duplicate elements)
+2) Set (Not accepting duplicate elements)
+3) Queue (Storing and Fetching the elements based on some order i.e FIFO)
+
+Note : Collection is a predefined interface available in java.util package where as Collections is a predefined  utility class which is available from JDK 1.2V which contains only static methods (Constructor is private)
+----------------------------------------------------------------
+27-01-2025
+-----------
+Collection Hierarchy :
+-----------------------
+Hierarchy is available in Paint Diagram (27-JAN-25)
+
+Methods of Collection interface :
+----------------------------------
+a) public boolean add(E element) :- It is used to add an item/element in the in the collection.
+
+b) public boolean addAll(Collection c) :- It is used to insert the specified collection elements in the existing collection(For merging the Collection)
+
+c) public boolean retainAll(Collection c) :- It is used to retain all the elements from existing element. (Common Element)
+
+d) public boolean removeAll(Collection c) :- It is used to delete all the elements from the existing collection.
+
+e) public boolean remove(Object element) :- It is used to delete an element from the collection based on the object.
+
+
+f) public int size() :- It is used to find out the size of the Collection [Total number of elements available]
+
+g) public void clear() :- It is used to clear all the elements at once from the Collection.
+
+All the above methods of Collection interface will be applicable to all the sub interfaces like List, Set and Queue.
+-------------------------------------------------------------
+List interface Hierarchy :
+---------------------------
+Available in Paint Digram [28-JAN-25]
+
+List interface :
+----------------
+List interface is a sub interface of Collection in java.util package available from JDK 1.2V
+
+List interface, Internally uses array concept so all the elements will be stored based on the index.
+
+Duplicates are allowed.
+
+null, homogeneoues, hetrogeneous values are allowed.
+
+We can perform automatic sorting by using Collections.sort(List list) because sort() method accept List as a parameter.
+----------------------------------------------------------------
+Behaviour of List interface Specific classes :
+-----------------------------------------------
+* It stores the elements on the basis of index because internally it is using array concept.
+* It can accept duplicate, homogeneous and hetrogeneous elements.
+* It stores everything in the form of Object.
+* When we accept the collection classes without generic concept then  compiler generates a warning message because It is unsafe object.
+* By using generic (<>) we can eliminate compilation warning and  still we can take homogeneous as well as hetrogeneous.(<Object>)
+* In list interface few classes are dynamically Growable like Vector and ArrayList. [28-JAN]   
+----------------------------------------------------------------
+Methods of List interface :
+--------------------------
+1) public boolean isEmpty() :- Verify whether List is empty or not
+
+2) public void clear() :- Will clear all the elements, Basically List will become empty.
+
+3) public int size() :- To get the size of the Collections(Total number of elements are available in the collection)
+
+4) public void add(int index, Object o) :- Insert the element based on the index position.
+
+5) public boolean addAll(int index, Collection c) :- Insert the Collection based on the index position
+
+6) public Object get(int index) :- To retrieve the element based on the index position
+
+7) public Object set(int index, Object o) :- To override or replace the existing element based on the index position
+
+8) public Object remove(int index) :- remove the element based on the index position
+
+9) public boolean remove(Object element) :-  remove the element based on the object element, It is the Collection interface method extended by List interface 
+
+10) public int indexOf() :- index position of the element
+
+11) public int lastIndex() :- last index position of the element
+
+12) public Iterator iterator() :- To fetch or iterate or retrieve the elements from Collection in forward direction only.
+
+13) public ListIterator listIterator() :- To fetch or iterate or retrieve the elements from Collection in forward and backward direction.
+---------------------------------------------------------------
+29-01-2025
+----------
+How many ways we can fetch the Collection Object :
+--------------------------------------------------
+There are 9 ways to fetch the Collection Object which are as 
+follows :
+
+1) By using toString() method of respective class. [JDK 1.0] 
+2) By using ordinary for loop.[JDK 1.0] 
+3) By using forEach() loop.[JDK 1.5] 
+4) By uisng Enumeration interface.[JDK 1.0] 
+5) By using Iterator interface.[JDK 1.2] 
+6) By using ListIterator interface.[JDK 1.2] 
+7) By using SplIterator interface.[JDK 1.8] 
+8) By using forEach() method.[JDK 1.8] 
+9) By using Method Reference.[JDK 1.8] 
+
+Note : Among all these 9 ways Enumeration, Iterator, ListIterator and SplIterator are the cursors so It can move from one direction to another direction.
+      
+
+Enumeration :
+----------------
+It is a predefined interface available in java.util package from JDK 1.0 onwards(Legacy interface).
+
+We can use Enumeration interface to fetch or retrieve the Objects one by one from the Collection because it is a cursor.
+
+We can create Enumeration object by using elements() method of the legacy Collection class. Internally it uses anonymous inner class object.
+
+public Enumeration elements();   
+
+Enumeration interface contains two methods :
+---------------------------------------------------
+1) public boolean hasMoreElements() :- It will return true if the Collection is having more elements.
+
+2) public Object nextElement() :- It will return collection object so return type is Object and move the cursor to the next line.
+
+Note :- It will only work with legacy Collections classes.
+--------------------------------------------------------------
+Iterator interface :
+----------------------
+It is a predefined interface available in java.util package available from 1.2 version.
+
+It is used to fetch/retrieve the elements from the Collection in forward direction only because it is also a cursor.
+
+It is also using private inner class i.e Itr class.
+
+public Iterator iterator();
+
+Example :
+-----------
+ Iterator itr = fruits.iterator();
+
+Now, Iterator interface has provided two methods 
+
+
+public boolean hasNext() :- 
+
+It will verify, the element is available in the next position or not, if available it will return true otherwise it will return false.
+
+public Object next() :- It will return the collection object and move the cursor to the element object.
+--------------------------------------------------------------
+ListIterator interface :
+-------------------------
+It is a predefined interface available in java.util package and it is the sub interface of Iterator available from JDK 1.2v.
+
+It is used to retrieve the Collection object in both the direction i.e in forward direction as well as in backward direction. Here the inner class name is LstItr class.
+
+public ListIterator listIterator();
+
+Example :
+-----------
+ListIterator lit =   fruits.listIterator();
+
+1) public boolean hasNext() :- 
+It will verify the element is available in the next position or not, if available it will return true otherwise it will return false.
+
+2) public Object next() :- It will return the next position collection object.
+
+3) public boolean hasPrevious() :- 
+It will verify the element is available in the previous position or not, if available it will return true otherwise it will return false.
+
+
+4) public Object previous () :- It will return the previous position collection object.
+
+Note :- Apart from these 4 methods we have add(), set() and remove() method in ListIterartor interface.       
+--------------------------------------------------------------
+SplIterator :
+-------------
+
+SplIterator interface :
+-----------------------
+It is a predefined interface available in java.util package from java 1.8 version.
+
+It is a cursor through which we can fetch the elements from the Collection [Collection, array, Stream]
+
+It is the combination of hasNext() and next() method.
+
+It is using forEachRemaining(Consumer<T> cons) method for fetching the elements.
+
+forEach(Consumer<T> cons)
+-------------------------
+From java 1.8 onwards every collection class provides a method forEach() method, this method takes Consumer functional interface as a  parameter.
+
+This method is avilable in java.lang.Iterable interface.
+-------------------------------------------------------------
+How forEach(Consumer<T> cons) method works internally ?
+-------------------------------------------------------
+Case 1 :
+--------
+package com.ravi.for_each_method_internals;
+
+import java.util.Vector;
+import java.util.function.Consumer;
+
+public class ForEachMethodInternalDemo1 {
+
+	public static void main(String[] args) 
+	{
+		Vector<String> fruits = new Vector<>();
+		fruits.add("Orange");
+		fruits.add("Apple");
+		fruits.add("Mango");
+		fruits.add("Kiwi");
+		fruits.add("Grapes");
+		
+		//Anonymous inner class
+		Consumer<String> cons = new Consumer<String>() 
+		{			
+			@Override
+			public void accept(String fruit) 
+			{				
+			   System.out.println(fruit.toUpperCase());	
+			}
+		};
+		
+		fruits.forEach(cons);
+
+	}
+
+}
+-------------------------------------------------------------
+Case 2 :
+---------
+
+package com.ravi.for_each_method_internals;
+
+import java.util.Vector;
+import java.util.function.Consumer;
+
+public class ForEachMethodInternalDemo2
+{
+
+	public static void main(String[] args) 
+	{
+		Vector<String> fruits = new Vector<>();
+		fruits.add("Orange");
+		fruits.add("Apple");
+		fruits.add("Mango");
+		fruits.add("Kiwi");
+		fruits.add("Grapes");
+		
+		//Lambda
+		Consumer<String> cons = fruit -> System.out.println(fruit.toUpperCase());			
+		fruits.forEach(cons);
+
+	}
+
+}
+--------------------------------------------------------------
+Case 3 :
+---------
+
+package com.ravi.for_each_method_internals;
+
+import java.util.Vector;
+import java.util.function.Consumer;
+
+public class ForEachMethodInternalDemo3 {
+
+	public static void main(String[] args) 
+	{
+		Vector<String> fruits = new Vector<>();
+		fruits.add("Orange");
+		fruits.add("Apple");
+		fruits.add("Mango");
+		fruits.add("Kiwi");
+		fruits.add("Grapes");		
+		
+	fruits.forEach(fruit -> System.out.println(fruit.toUpperCase()));
+
+	}
+
+}
+
+--------------------------------------------------------------
+WAP that describes how to retrieve the Objects by using above 9 ways :
+
+package com.ravi.collection;
+
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Spliterator;
+import java.util.Vector;
+
+public class RetrievingCollectionObject 
+{
+	public static void main(String[] args)
+	{                   
+		Vector<String> fruits = new Vector<>();
+		fruits.add("Orange");
+		fruits.add("Apple");
+		fruits.add("Mango");
+		fruits.add("Kiwi");
+		fruits.add("Grapes");
+				
+		System.out.println("1) BY USING TOSTRING METHOD :");
+		System.out.println(fruits.toString()); 
+		
+		System.out.println("2) BY USING ORDINARY FOR LOOP :");
+		
+		for(int i=0; i<fruits.size(); i++)
+		{
+			System.out.println(fruits.get(i));
+		}
+		
+		
+		System.out.println("3) BY USING FOR EACH LOOP :");
+		
+		for(String fruit : fruits)
+		{
+			System.out.println(fruit);
+		}
+		
+		System.out.println("4) BY USING ENUMARATION INTERFACE :");
+		
+	    Enumeration<String> ele = fruits.elements();
+	    
+	    while(ele.hasMoreElements())
+	    {
+	    	System.out.println(ele.nextElement());
+	    }
+	    
+	    System.out.println("5) BY USING ITERATOR INTERFACE :");
+	    
+	    Iterator<String> itr = fruits.iterator();
+	    itr.forEachRemaining(fruit -> System.out.println(fruit));
+	   
+	    
+	    System.out.println("6) BY USING LISTITERATOR INTERFACE :");
+	    
+	    ListIterator<String> lstItr = fruits.listIterator();                
+	    
+	    System.out.println("In Forward Direction :");
+	    
+	    while(lstItr.hasNext())
+	    {
+	    	System.out.println(lstItr.next());
+	    } 
+	    
+	    System.out.println("In Backward Direction :");
+	    
+	    while(lstItr.hasPrevious())
+	    {
+	    	System.out.println(lstItr.previous());
+	    }
+	    
+	    System.out.println("7) BY USING SPLITERATOR INTERFACE");
+	    
+	    Spliterator<String> splItr = fruits.spliterator();
+	    splItr.forEachRemaining(fruit -> System.out.println(fruit));
+	    
+	    System.out.println("8) BY USING FOREACH METHOD :");
+	    fruits.forEach(fruit -> System.out.println(fruit));
+	    
+	    System.out.println("9) BY USING METHOD REFERENCE :");
+	    fruits.forEach(System.out::println);
+	    
+	}
+}
+--------------------------------------------------------------
+30-01-2025
+----------
+Working with List interface Specific classes :
+-----------------------------------------------
+As we know, in List interface we have 4 implemented classes which are as follows :
+
+  1) Vector<E>
+  2) Stack<E>
+  3) ArrayList<E>
+  4) LinkedList<E>
+  
+------------------------------------------------------------- Vector<E>
+----------
+
+Vector<E> :
+-----------
+public class Vector<E> extends AbstractList<E>  implements List<E>, Serializable, Clonable, RandomAccess
+
+Vector is a predefined class available in java.util package under List interface. 
+
+Vector is always from java means it is available from jdk 1.0 version.
+
+It can accept duplicate, null, homogeneous as well as hetrogeneous elements.
+
+Vector and Hashtable, these two classes are available from jdk 1.0, remaining Collection classes were added from 1.2 version. That is the reason Vector and Hashtable are called legacy(old) classes.
+
+The main difference between Vector and ArrayList is, ArrayList methods are not synchronized so multiple threads can access the method of ArrayList where as on the other hand most the methods are synchronized in Vector so performance wise Vector is slow.
+
+*We should go with ArrayList when Threadsafety is not required on the other hand we should go with Vector when we need ThreadSafety for reterival operation.
+
+Here Iterator is Fail Fast Iterator.
+
+It stores the elements on index basis.It is dynamically growable with initial capacity 10. The next capacity will be 20 i.e double of the first capacity.
+
+new capacity = current capacity * 2;
+
+It implements List, Serializable, Clonable, RandomAccess interfaces.
+
+Constructors in Vector :
+-------------------------
+We have 4 types of Constructor in Vector
+
+1) Vector v1 = new Vector();        
+     It will create the vector object with default capacity is 10        
+    
+2) Vector v2 = new Vector(int initialCapacity);     
+     Will create the vector object with user specified capacity.
+
+3) Vector v3 = new Vector(int initialCapacity, int capacityIncrement);     
+     Eg :-     Vector v = new Vector(1000,5);
+
+     Initially It will create the Vector Object with initial capacity 1000 and then when  the capacity will be full then increment by 5 so the next capacity would be 1005, 1010 and so on.
+
+ 4) Vector v4 = new Vector(Collection c);
+    We can achieve loose coupling  
+    
+--------------------------------------------------------------
+package com.ravi.vector;
+
+import java.util.Collections;
+import java.util.Vector;
+
+public class VectorDemo {
+
+	public static void main(String[] args) 
+	{
+		Vector<String> listOfCity = new Vector<>();
+		listOfCity.add("Hyderabad");
+		listOfCity.add("Pune");
+		listOfCity.add("Indore");
+		listOfCity.add("Bhubneswar");
+		listOfCity.add("Kolkata");
+		
+		System.out.println("Before Sorting :"+listOfCity);
+		
+        Collections.sort(listOfCity);
+        
+        System.out.println("After Sorting :"+listOfCity);
+        
+        //Remove the element based on the index position
+        listOfCity.remove(2);
+        System.out.println(listOfCity);
+        
+        //Remove based on the Object
+        listOfCity.remove("Kolkata");
+        System.out.println(listOfCity);
+       
+	}
+
+}
+-------------------------------------------------------------
+//Vector Program on capacity
+
+package com.ravi.vector;
+
+import java.util.*;
+
+public class VectorDemo1 {
+	public static void main(String[] args)
+	{
+		Vector<Integer> v = new Vector<>(100,9); 
+		
+		System.out.println("Initial capacity is :" + v.capacity());
+
+		for (int i = 0; i < 100; i++) 
+		{
+			v.add(i);
+		}
+
+		System.out.println("After adding 100 elements  capacity is :" + v.capacity()); 
+		
+		v.add(101);
+		System.out.println("After adding 101th elements  capacity is :" + v.capacity());
+
+		for(int i=0; i<v.size(); i++)
+		{
+			if(i%5==0)
+			{
+				System.out.println();
+			}
+			System.out.print(v.get(i)+"\t");
+		}
+
+		
+	}
+}
+-------------------------------------------------------------
+package com.ravi.vector;
+
+//Array To Collection
+import java.util.*;
+public class VectorDemo2
+{
+	public static void main(String args[])
+	{
+		Vector<Integer> v = new Vector<>();  
+		
+		int x[]={22,20,10,40,15,58};
+ 
+      //Adding array values to Vector
+		for(int i=0; i<x.length; i++)
+		{
+			v.add(x[i]);
+		}		
+		Collections.sort(v);
+		System.out.println("Maximum element is :"+Collections.max(v));
+		System.out.println("Minimum element is :"+Collections.min(v));
+		System.out.println("Vector Elements :");
+		
+		v.forEach(y -> System.out.println(y));
+		
+		System.out.println(".....................");
+		Collections.reverse(v);
+		v.forEach(y -> System.out.println(y));
+		
+		//Vector to Array
+		 Object[] array = v.toArray();
+		System.out.println("Vector to array");
+		System.out.println(Arrays.toString(array));
+		
+	}
+}
+--------------------------------------------------------------
+package com.ravi.vector;
+
+import java.util.Vector;
+
+record Prod(Integer id, String name)
+{
+	
+}
+
+public class VectorDemo3
+{
+	public static void main(String[] args) 
+	{
+	  	Vector<Prod> listOfProduct = new Vector<>();
+	  	listOfProduct.add(new Prod(333, "Mobile"));
+	  	listOfProduct.add(new Prod(111, "Camera"));
+	  	listOfProduct.add(new Prod(222, "Laptop"));
+	  	listOfProduct.add(new Prod(444, "Tablet"));
+	  	
+	  	listOfProduct.forEach(System.out::println);
+	}
+}
+-------------------------------------------------------------
+31-01-2025
+-----------
+What is Fail Fast Iterator in Collection ?
+------------------------------------------
+While retrieving the object from the collection by using Itearor interface or for each loop, if at any point of time the original structure is going to modify after the creation of Itearator then we will get java.util.ConcurrentModificationExacption.
+
+package com.nit.collection;
+
+import java.util.Iterator;
+import java.util.Vector;
+
+class Concurrent extends Thread
+{
+	private Vector<String> cities = null;
+		
+	public Concurrent(Vector<String> cities) 
+	{
+		super();
+		this.cities = cities;
+	}
+
+	@Override
+	public void run()
+	{
+		try
+		{
+			Thread.sleep(1000);
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		
+		cities.add("Ameerpet");
+		
+	}
+}
+
+
+public class FailFastIterator {
+
+	public static void main(String[] args) throws InterruptedException
+	{
+		Vector<String> cityName = new Vector<>();
+		cityName.add("Indore");
+		cityName.add("Bhubneswar");
+		cityName.add("Hyderabad");
+		cityName.add("Mumbai");
+		cityName.add("Pune");
+
+		Concurrent c1 = new Concurrent(cityName);
+		c1.start();
+		
+		Iterator<String> itr = cityName.iterator();
+		
+		while(itr.hasNext())
+		{
+			System.out.println(itr.next());
+			Thread.sleep(500);
+		}
+		
+		
+	}
+
+}
+
+In the above program we will get java.util.ConcurrentModificationException because Iterator is Fail Fast iterator hence while iterating the element if the structure will be modified then exception will be generated.
+-----------------------------------------------------------------------
+In order to resolve the issue, Java software people has provided 
+a new concept in a new package i.e java.util.concurrent sub package which is introduced from JDK 1.5V.
+
+Here we have basically two advantages :
+
+ 1) Here classes are immutable classes (Unchanged classes)
+ 2) Here Iteartor is Fail safe iterator but not fail fast.
+
+
+package com.nit.collection;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+class Concurrent extends Thread
+{
+	private CopyOnWriteArrayList<String> cities = null;
+		
+	public Concurrent(CopyOnWriteArrayList<String> cities) 
+	{
+		super();
+		this.cities = cities;
+	}
+
+	@Override
+	public void run()
+	{
+		try
+		{
+			Thread.sleep(1000);
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		
+		cities.add("Ameerpet");
+		
+	}
+}
+
+
+public class FailFastIterator {
+
+	public static void main(String[] args) throws InterruptedException
+	{
+		CopyOnWriteArrayList<String> cityName = new CopyOnWriteArrayList<>();
+		cityName.add("Indore");
+		cityName.add("Bhubneswar");
+		cityName.add("Hyderabad");
+		cityName.add("Mumbai");
+		cityName.add("Pune");
+
+		Concurrent c1 = new Concurrent(cityName);
+		c1.start();
+		
+		Iterator<String> itr = cityName.iterator();
+		
+		while(itr.hasNext())
+		{
+			System.out.println(itr.next());
+			Thread.sleep(500);
+		}
+		
+		System.out.println(".................");
+		
+		   Spliterator<String> spliterator = cityName.spliterator();
+		   spliterator.forEachRemaining(System.out::println);
+		
+	}
+
+}
+------------------------------------------------------------------
+03-02-2025
+---------
+Program that describes ArrayList is better than Vector in performance wise :
+----------------------------------------------------------------------
+As we know ArrayList methods are not synchronized so multiple threads can access the method of ArrayList, on the other hand most of the methods are synchronized in Vector class.
+
+java.lang.System class has provided a predefined static method called currentTimeMillis() through which we can get the current system time in millisecond. 
+
+public static native long currentTimeMillis();
+
+
+//Program to describe that ArrayList is better than Vector in performance
+
+package com.ravi.vector;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
+public class VectorDemo4 
+{
+	public static void main(String[] args) 
+	{
+		ArrayList<Integer>	al = new ArrayList<>();
+		
+	    long startTime = System.currentTimeMillis();  
+		
+		for(int i=0; i<1000000; i++)
+		{
+			al.add(i);
+		}
+		
+		long endTime = System.currentTimeMillis(); 
+        
+		System.out.println("Total time taken by ArrayList class :"+(endTime - startTime)+" ms ");
+	
+        Vector<Integer>	v1 = new Vector<>();
+		
+	    startTime = System.currentTimeMillis();  
+		
+		for(int i=0; i<1000000; i++)
+		{
+			v1.add(i);
+		}
+		
+		 endTime = System.currentTimeMillis(); 
+        
+		System.out.println("Total time taken by Vector class :"+(endTime - startTime)+" ms ");
+
+	
+	}
+}
+
+Note : Performance wise ArrayList is better than Vector becoz ArrayList methods are not synchronized.
+---------------------------------------------------------------------
+package com.ravi.vector;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Vector;
+
+public class VectorDemo5
+{
+
+	public static void main(String[] args) 
+	{
+		Vector<String> listOfCity = new Vector<>();
+		listOfCity.add("Surat");
+		listOfCity.add("Pune");
+		listOfCity.add("Ahmadabad");
+		listOfCity.add("Vanaras");
+		
+			
+		Collections.sort(listOfCity);
+		
+		listOfCity.forEach(System.out::println);
+		
+		
+		System.out.println(".............");
+		
+		Vector<Integer> listOfNumbers = new Vector<>();
+		listOfNumbers.add(500);
+		listOfNumbers.add(900);
+		listOfNumbers.add(400);
+		listOfNumbers.add(300);
+		listOfNumbers.add(800);
+		listOfNumbers.add(200);
+		listOfNumbers.add(100);	
+		
+		System.out.println("Original Data...");
+		System.out.println(listOfNumbers);
+		
+		
+		System.out.println("Ascending Order...");
+		Collections.sort(listOfNumbers);
+		System.out.println(listOfNumbers);
+		
+		System.out.println("Descending Order...");
+		//sort(List list, Comparator<T> comp);
+		Collections.sort(listOfNumbers, Collections.reverseOrder());
+		System.out.println(listOfNumbers);
+		
+		//Converting Our Vector(Collection Object) into Array
+		Vector<String> listOfFruits = new Vector<>();
+		listOfFruits.add("Orange");
+		listOfFruits.add("Apple");
+		listOfFruits.add("Mango");
+		
+		Object[] fruits = listOfFruits.toArray();
+		System.out.println(Arrays.toString(fruits));
+		
+		
+		
+	}
+
+}
+
+Methods used in the above program :
+-----------------------------------
+1) public void sort(List<E> list, Comparator<T> cmp) : It is sort the
+   list based on the specified Comparator.
+   
+2) public Object[] toArray() : It is used to convert the Collection object into Object array.
+----------------------------------------------------------------------
+   package com.ravi.vector;
+
+import java.util.Scanner;
+import java.util.Vector;
+
+public class VectorDemo6
+{
+    public static void main(String[] args) 
+    {        
+        Vector<String> toDoList = new Vector<>();
+
+        Scanner scanner = new Scanner(System.in);
+
+        int choice;
+        do 
+        {
+            System.out.println("To Do List Menu:");
+            System.out.println("1. Add Task");
+            System.out.println("2. View Tasks");
+            System.out.println("3. Mark Task as Completed");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            choice = scanner.nextInt(); 
+            scanner.nextLine(); 
+
+            switch (choice) 
+            {
+                case 1:
+                    // Add Task
+                    System.out.print("Enter task description: ");
+                    String task = scanner.nextLine();
+                    toDoList.add(task);
+                    System.out.println("Task added successfully!\n");
+                    break;
+                case 2:
+                    // View Tasks
+                    System.out.println("To Do List:");
+                    for (int i = 0; i < toDoList.size(); i++) 
+                    {
+                      System.out.println((i + 1) + ". " + toDoList.get(i));
+                    }
+                    System.out.println();
+                    break;
+                case 3:
+                    // Mark Task as Completed
+                    System.out.print("Enter task number to mark as completed: ");
+                    int taskNumber = scanner.nextInt();  //1
+                    if (taskNumber >= 1 && taskNumber <= toDoList.size()) 
+                    {
+                        String completedTask = toDoList.remove(taskNumber - 1);
+                        System.out.println("Task marked as completed: " + completedTask + "\n");
+                    } 
+                    else {
+                        System.out.println("Invalid task number!\n");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Exiting ToDo List application. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.\n");
+            }
+
+        } 
+        while (choice != 4);
+
+       
+        scanner.close();
+    }
+}
+--------------------------------------------------------------------
+public Iterator asIterator() : It is a default method provided inside
+                               Enumeration interface from java 9V. It will return Iteartor interface Object so we can apply Iterator interface method.
+
+
+package com.ravi.vector;
+
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
+
+record Product(int productId, String productName)
+{
+	
+}
+
+public class VectorDemo7 
+{
+	public static void main(String[] args) 
+	{
+		Vector<Product> listOfProduct = new Vector<>();
+		listOfProduct.add(new Product(111, "Laptop"));
+		listOfProduct.add(new Product(222, "Mobile"));
+		listOfProduct.add(new Product(333, "Camera"));
+		listOfProduct.add(new Product(444, "Bag"));
+		listOfProduct.add(new Product(555, "Watch"));
+		
+		Enumeration<Product> ele = listOfProduct.elements();
+		
+		
+		Iterator<Product> itr = ele.asIterator();
+		itr.forEachRemaining(System.out::println);
+		
+		
+	}
+
+}
+----------------------------------------------------------------------
+Stack<E> :
+------------
+public class Stack<E> extends Vector<E>
+
+It is a predefined class available in java.util package. It is the sub class of Vector class introduced from JDK 1.0 so, It is also a legacy class. 
+
+It is a linear data structure that is used to store the Objects in LIFO (Last In first out) order.
+
+Inserting an element into a Stack is known as push operation  where as extracting an element from the top of the stack is known as pop operation.
+
+It throws an exception called java.util.EmptyStackException, if Stack is empty and we want to fetch the element.
+
+It has only one constructor as shown below
+
+Stack s = new Stack(); 
+
+Will create empty Stack Object.
+------------------------------------------------------------------------------------
+Methods :
+----------
+public E push(Object o) :- To insert an element in the bottom of the Stack.
+
+public E pop() :- To remove and return the element from the top of the Stack.
+
+public E peek() :- Will fetch the element from top of the Stack without removing.
+
+public boolean empty() :- Verifies whether the stack is empty or not (return type is boolean)
+
+public int search(Object o) :- It will search a particular element in the Stack and it returns OffSet position (int value). If the element is not present in the Stack it will return -1
+----------------------------------------------------------------------
+//Program to insert and fetch the elements from stack
+package com.ravi.stack;
+import java.util.*;
+public class Stack1
+{
+      public static void main(String args[])
+      {
+            Stack<Integer> s = new Stack<>();
+             try
+             {
+                  s.push(12);
+                  s.push(15);
+				  s.push(22);
+				  s.push(33);
+				  s.push(49);				  
+				  System.out.println("After insertion elements are :"+s); 
+               
+                  System.out.println("Fetching the elements using pop method");
+                  System.out.println(s.pop());
+                  System.out.println(s.pop()); 
+                  System.out.println(s.pop());  
+                  System.out.println(s.pop());  
+                  System.out.println(s.pop());
+                                                
+                 			  	
+	 			  System.out.println("After deletion elements are :"+s);//[]
+				  
+				  System.out.println("Is the Stack empty ? :"+s.empty());  
+              }
+			catch(EmptyStackException e)
+			{
+			   e.printStackTrace();
+			} 
+		
+      }
+}
+---------------------------------------------------------------------
+//add(Object obj) is the method of Collection
+package com.ravi.stack;
+import java.util.*;
+public class Stack2
+{
+      public static void main(String args[])
+      {
+            Stack<Integer> st1 = new Stack<>();
+            st1.add(10);
+            st1.add(20);      
+            st1.forEach(x -> System.out.println(x));
+
+            Stack<String> st2 = new Stack<>();
+            st2.add("Java");  
+            st2.add("is");
+            st2.add("programming");
+            st2.add("language"); 
+            st2.forEach(x -> System.out.println(x));
+
+            Stack<Character> st3 = new Stack<>();
+            st3.add('A');  
+            st3.add('B');
+            st3.forEach(x -> System.out.println(x));
+
+            Stack<Double> st4 = new Stack<>();
+            st4.add(10.5);
+            st4.add(20.5);               
+            st4.forEach(x -> System.out.println(x));          
+      }  
+}
+----------------------------------------------------------------------
+package com.ravi.stack;
+import java.util.Stack;  
+
+public class Stack3
+{  
+	public static void main(String[] args)   
+		{  
+			Stack<String> stk= new Stack<>();  
+			stk.push("Apple");  
+			stk.push("Grapes");  
+			stk.push("Mango");  
+			stk.push("Orange");  
+			System.out.println("Stack: " + stk);  
+			
+			String fruit = stk.peek(); 			
+			System.out.println("Element at top: " + fruit);  
+			System.out.println("Stack elements are : " + stk); 
+		}  
+}  
+---------------------------------------------------------------------
+//Searching an element in the Stack
+package com.ravi.stack;
+import java.util.Stack;  //
+public class Stack4
+{  
+	public static void main(String[] args)   //1  -1  false  2
+		{  
+		     
+			Stack<String> stk= new Stack<>();  
+			stk.push("Apple");  
+			stk.push("Grapes");  
+			stk.push("Mango"); 			
+			System.out.println("Offset Position is : " + stk.search("Mango")); //1			
+			System.out.println("Offser Position is : " + stk.search("Banana")); //-1
+		    System.out.println("Is stack empty ? "+stk.empty());	//false
+			
+			System.out.println("Index Position is : " + stk.indexOf("Mango")); //2
+		}  
+}  
+
+------------------------------------------------------------------
+04-02-2025
+----------
+ArrayList<E>
+------------
+public class ArrayList<E>  extends AbstractList<E> implements List<E>, Serializable, Clonable, RandomAccess  
+
+It is a predefined class available in java.util package under List interface from java 1.2v.
+
+It accepts duplicate,null, homogeneous and hetrogeneous elements.
+
+It is dynamically growable array.
+
+It stores the elements on index basis so it is simillar to dynamic array.
+
+Initial capacity of ArrayList is 10. The new capacity of Arraylist can be calculated by using the  formula
+new capacity = (current capacity * 3)/2 + 1  [Almost 50% increment]
+
+*All the methods declared inside an ArrayList is not synchronized so multiple thread can access the method of ArrayList so performance wise it is good.
+
+*It is highly suitable for fetching or retriving operation when duplicates are allowed and Thread-safety is not required.
+
+Here Iterator is Fail Fast Iteartor.
+
+It implements List,Serializable, Clonable, RandomAccess interfcaes
+
+Constructor of ArrayList :
+----------------------------
+In ArrayList we have 3 types of Constructor:
+Constructor of ArrayList :
+
+1) ArrayList al1 = new ArrayList();
+   Will create ArrayList object with default capacity 10.
+
+2) ArrayList al2 = new ArrayList(int initialCapacity);
+   Will create an ArrayList object with user specified Capacity
+
+3) ArrayList al3 = new ArrayList(Collection c)
+   We can copy any Collection interface implemented class data to the current object   reference (Coping one Collection data to another)
+------------------------------------------------------------------
+//Program on loose coupling :
+
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
+public class LooseCoupling {
+
+	public static void main(String[] args)
+	{
+		Vector<Integer> v1 = new Vector<Integer>();
+		v1.add(12);
+		v1.add(29);
+		v1.add(59);
+		v1.add(24);
+		
+		ArrayList<Integer> list = new ArrayList<>(v1);		
+		System.out.println(list);
+		
+		
+	}
+
+}
+------------------------------------------------------------------
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+
+public class ArrayListDemo
+{
+    public static void main(String[] args) 
+    {
+        
+        ArrayList<Integer> numbers = new ArrayList<>();
+                
+        numbers.add(100);
+        numbers.add(200);
+        numbers.add(300);
+        numbers.add(400);
+        
+        int sum = 0;
+        for (int number : numbers) 
+        {
+            sum += number;
+        }        
+        System.out.println("Sum of numbers: " + sum);
+    }
+}
+-----------------------------------------------------------------
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+record Customer(Integer custId, String custName, Double custSal)
+{	
+}
+
+public class ArrayListDemo1
+{
+	public static void main(String[] args) 
+	{
+		ArrayList<Customer> listOfCustomer = new ArrayList<>();
+		listOfCustomer.add(new Customer(111, "Scott", 800D));
+		listOfCustomer.add(new Customer(222, "Smith", 1200D));
+		listOfCustomer.add(new Customer(333, "Alen", 1800D));
+		listOfCustomer.add(new Customer(444, "Martin", 1500D));
+		listOfCustomer.add(new Customer(555, "John", 1300D));
+		
+		
+		listOfCustomer.forEach(System.out::println);
+		
+		
+		
+		
+	}
+}
+------------------------------------------------------------------
+package com.ravi.arraylist;
+
+//Program to merge and retain of two collection addAll()   retainlAll()
+import java.util.*;
+public class ArrayListDemo2  
+	{
+		public static void main(String args[]) 
+		{ 
+		  ArrayList<String> al1=new ArrayList<>();
+		  al1.add("Ravi");
+		  al1.add("Rahul");
+		  al1.add("Rohit");		  
+		  
+		  ArrayList<String> al2=new ArrayList<>();
+		  al2.add("Pallavi");
+		  al2.add("Sweta");
+		  al2.add("Puja");		  
+
+		  al1.addAll(al2);  
+
+          al1.forEach(str -> System.out.println(str.toUpperCase()) );
+
+        System.out.println(".................................");
+
+		  ArrayList<String> al3=new ArrayList<>();
+		  al3.add("Ravi");
+		  al3.add("Rahul");
+		  al3.add("Rohit");		  
+		  
+		  ArrayList<String> al4=new ArrayList<>();
+		  al4.add("Pallavi");
+		  al4.add("Rahul");
+		  al4.add("Raj");
+		  
+		  al3.retainAll(al4);  
+
+          al3.forEach(x -> System.out.println(x));		  
+   }
+}
+------------------------------------------------------------------
+
+How to create fixed length and Immutable object :
+-------------------------------------------------
+a) Creating a fixed length array by using asList():
+---------------------------------------------------
+Arrays class has provided a predefined static method called asList(T ...x), by using this asList() method we create a fixed length array. 
+
+In this fixed lengh array we can't add/remove any new element but we can replace the existing element using new element.
+
+If we try to add/remove an element then we will get an Excption java.lang.UnsupportedOperationException.
+
+List<E> list = Arrays.asList(T ...x);
+
+
+FixedLengthArray.java
+----------------------
+package com.ravi.arraylist;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class FixedLengthArray {
+
+	public static void main(String[] args) 
+	{
+		List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7);
+		//numbers.add(8); java.lang.UnsupportedOperationException
+		//numbers.add(0, 100); java.lang.UnsupportedOperationException
+		//numbers.remove(0);  java.lang.UnsupportedOperationException
+		numbers.set(0, 100);
+		System.out.println(numbers);
+
+	}
+
+}
+
+b) Creating an immutable List by using List.of(E ...x)
+-------------------------------------------------------
+List interface has provided various static methods called of(E ...x) available from java 9 which creates an immutable List. 
+
+We can't perform any add or remove or replace operation otherwise we will get java.lang.UnsupportedOperationException.
+
+List<E> list = List.of(E ...x)
+
+package com.ravi.arraylist;
+
+import java.util.List;
+
+public class ImmutableList {
+
+	public static void main(String[] args) 
+	{
+		List<Integer> list = List.of(1,2,3,4,5,6,7,8,9,10,11,12);
+        //list.add(13);  java.lang.UnsupportedOperationException
+		//list.remove(0); java.lang.UnsupportedOperationException
+		//list.set(0, 100); java.lang.UnsupportedOperationException
+		System.out.println(list);
+		
+	}
+
+}
+------------------------------------------------------------------
+//Program to fetch the elements in forward and backward 
+//direction using ListIterator interface
+
+package com.ravi.arraylist;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+
+public class ArrayListDemo3   
+{                             
+public static void main(String args[])
+  {
+	 List<String> listOfName = Arrays.asList("Rohit","Akshar","Pallavi","Sweta"); //Length is fixed
+	 
+	 Collections.sort(listOfName);
+	 
+	 //Fetching the data in both the direction
+	 ListIterator<String> lst = listOfName.listIterator();
+	 
+	 System.out.println("In Forward Direction..");	 
+	 while(lst.hasNext())
+	 {
+		System.out.println(lst.next()); 
+	 }
+	 System.out.println("In Backward Direction..");	 
+	 while(lst.hasPrevious())
+	 {
+		System.out.println(lst.previous()); 
+	 }
+	 
+  }
+}
+-----------------------------------------------------------------
+Serialization and Deserialization on ArrayList object :
+
+public class ArrayListDemo4
+{
+}
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------
+Collections.sort(List<E> list, Comparator<T> comp):
+---------------------------------------------------
+Collections class has provided static method called reverseOrder() 
+to reverse the Collection data, the return type of this method is Comparator<T> interface.
+
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class ArrayListDemo5
+{
+    public static void main(String[] args)
+    {        
+        ArrayList<String> cities = new ArrayList<>();
+
+        cities.add("Hyderabad");
+        cities.add("Delhi");
+        cities.add("Banglore");
+        cities.add("Chennai");
+        
+        System.out.println("Before sorting: " + cities);
+
+        Collections.sort(cities);
+        System.out.println("After sorting (Ascending): " + cities);
+        
+        Collections.sort(cities, Collections.reverseOrder());
+        System.out.println("After sorting (Descending): " + cities);
+
+    }
+}
+-----------------------------------------------------------------
+package com.ravi.arraylist;
+
+//Program on ArrayList that contains null values as well as we can pass 
+//the element based on the index position
+import java.util.ArrayList;
+import java.util.LinkedList;
+public class ArrayListDemo6
+{
+	public static void main(String[] args) 
+	{
+		ArrayList<Object> al = new ArrayList<>(); //Generic type
+		al.add(12);
+		al.add("Ravi");
+		al.add(12);		
+		al.add(3,"Hyderabad"); 
+		al.add(1,"Naresh");
+		al.add(null);
+		al.add(11);
+		System.out.println(al);  //12 Naresh  Ravi  12  Hyderabad null 11
+	}
+}
+------------------------------------------------------------------
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+import java.util.List;
+
+record Professor(String name, String specialization)
+{
+}
+
+class Department 
+{
+	private String departmentName;
+	private List<Professor> professors;
+	
+	public Department(String departmentName) 
+	{
+		super();
+		this.departmentName = departmentName;
+		this.professors = new ArrayList<Professor>(); //Composition
+	}
+	
+	
+	public void addProfessor(Professor prof)
+	{
+		this.professors.add(prof);
+	}
+
+
+	public String getDepartmentName() 
+	{
+		return departmentName;
+	}
+
+
+	public List<Professor> getProfessors() 
+	{
+		return professors;
+	}
+	
+}
+
+public class ArrayListDemo7
+{
+    public static void main(String[] args) 
+    {
+     
+    	Department dept = new Department("Computer Science");
+    	dept.addProfessor(new Professor("Mr James","Java"));
+    	dept.addProfessor(new Professor("Mr Scott","Python"));
+    	dept.addProfessor(new Professor("Mr Smith","Adv Java"));
+    	dept.addProfessor(new Professor("Mr Martin",".NET"));
+    	
+    	System.out.println("Department Name is :"+dept.getDepartmentName());
+    	
+    	System.out.println("Professor in :"+dept.getDepartmentName()+" department :");
+    	
+    	List<Professor> professors = dept.getProfessors();
+    	professors.forEach(System.out::println);
+    	
+      
+    }
+}
+------------------------------------------------------------------
+How to copy the data from the Original List :
+---------------------------------------------
+We can copy the content from original list by using the following two ways :
+
+ 1) By using clone() method
+ 2) By using constructor (Loose Coupilng)
+ 
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+
+public class ArrayListDemo8
+{
+    public static void main(String[] args) 
+    {
+        ArrayList<String> original = new ArrayList<>();
+        original.add("BCA");
+        original.add("MCA");
+        original.add("BBA");
+
+         @SuppressWarnings("unchecked")
+		ArrayList<String> duplicate =(ArrayList<String>) original.clone();
+         System.out.println(duplicate);
+            
+         ArrayList<String> copy = new ArrayList<>(original);
+         System.out.println(copy);
+       
+    }
+}
+-----------------------------------------------------------------
+public List subList(int fromIndex, int toIndex) :
+--------------------------------------------------
+It is used to fetch/retrieve the part of the List based on the given index. The return type of this method is List, Here fromIndex is inclusive and toIndex is exclusive.
+
+public boolean contains(Object element) :
+------------------------------------------
+It is used to find the given element object in the corresponsing List, if available it  will return true otherwise false.
+
+public boolean removeIf(Predicate<T> filter)
+---------------------------------------------
+It is used to remove the elements based on boolean condition passed as a Predicate.
+
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArrayListDemo9 {
+
+	public static void main(String[] args) 
+	{
+		ArrayList<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        list.add(6);
+        list.add(7);
+        list.add(8);
+        list.add(9);
+        list.add(10);
+        
+        //public List subList(int fromIndex, int toIndex)
+        List<Integer> subList = list.subList(2, 5);   
+        System.out.println(subList);
+        
+        System.out.println("........................");
+         
+        //public boolean contains(Object obj)
+        boolean contains = list.contains(9);
+        System.out.println(contains);
+        
+        System.out.println("........................");
+        
+        //public int indexOf(Object obj)
+        System.out.println(list.indexOf(1));   
+        
+                
+         //public void removeIf(Predicate<T> p)
+           list.removeIf(num -> num%2==1);
+           System.out.println(list);
+        
+	}
+}
+-----------------------------------------------------------------------
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RemoveIfDemo {
+
+	public static void main(String[] args) 
+	{
+		
+		List<String> listOfNames = new ArrayList<String>();
+		listOfNames.add("Raj");
+		listOfNames.add("Rohit");
+		listOfNames.add("Rohan");
+		listOfNames.add("Ankit");
+		listOfNames.add("Scott");
+		
+		System.out.println("Original List :"+listOfNames);
+		
+		//Remove all the name which starts from character 'R'
+		
+		listOfNames.removeIf(str -> str.startsWith("R"));
+		System.out.println("After removing :"+listOfNames);
+		
+	}
+
+}
+----------------------------------------------------------------------
+public void trimToSize() :
+---------------------------
+Used to reduce the capacity.
+
+public void ensureCapacity(int minCapacaity):
+---------------------------------------------
+Increase the capacity of the ArrayList to avoid frequent resizing. 
+
+The minCapacaity parameter will specify that ArrayList will definetly hold the number of elements specified in the parameter of ensureCapacity() method.
+
+After using  ensureCapacity() method, still it is dynamically growable.
+
+
+package com.ravi.arraylist;
+
+import java.util.ArrayList;
+import java.util.RandomAccess;
+
+public class ArrayListDemo10 {
+
+	public static void main(String[] args) 
+	{
+		ArrayList<String> list = new ArrayList<>(100); 
+        list.add("Java");
+        list.add("World");  
+        
+        
+        
+        //public void trimToSize()
+        list.trimToSize();
+        System.out.println("Trimmed List Size: " + list.size()); 
+        
+        System.out.println(".........................");
+        
+        
+        ArrayList<Integer> listOfNumber = new ArrayList<>();
+
+        // public void ensureCapacity(int minCapacity)
+        //Increase the capacity of the ArrayList to avoid frequent resizing.
+        listOfNumber.add(999);
+        
+        
+        
+        listOfNumber.ensureCapacity(100);
+
+        for (int i = 0; i < 50; i++) 
+        {
+        	listOfNumber.add(i);
+        }
+
+        System.out.println("List size: " + listOfNumber.size());
+           
+        
+
+	}
+
+}
+-----------------------------------------------------------------------
+Time Complexity of ArrayList :
+-------------------------------
+The time complexity of ArrayList to insert OR delete an element from the middle would be O(n) [Big O of n] because 'n' number of elements will be re-located so, it is not a good choice to perform insertion and deletion operation in the middle OR begning of the List. 
+
+On the other hand time complexity of ArrayList to retrieve an element from the List would be O(1) because by using get(int index) method we can retrieve the element randomly from the list. ArrayList class implements RandomAccess marker interface which provides the facility to fetch the elements Randomly.
+[05-FEB]
+
+------------------------------------------------------------------
+In order to insert and delete the element in middle of the list frequently, we introduced LinkedList class.
+
+LinkedList<E>
+--------------
+public class LinkedList<E> extends AbstractSequentialList<E> implements List<E>, Deque<E>, Cloneable, Serializable
+
+It is a predefined class available in java.util package under List interface from JDK 1.2v.
+
+It is ordered by index position like ArrayList except the elements (nodes) are doubly linked to one another. This linkage provide us new method for adding and removing the elements from the middle of LinkedList.
+
+It stores the elements in non-contiguous memory location.
+
+*The important thing is, LikedList may iterate more slowely than ArrayList but LinkedList is a good choice when we want to insert or delete the elements frequently in the list.
+
+From jdk 1.6 onwards LinkedList class has been enhanced to support basic queue operation by implementing Deque<E> interface.
+
+LinkedList methods are not synchronized.
+
+It inserts the elements by using Doubly linked List so insertion and deleteion is very easy.
+
+
+ArrayList is using Dynamic array data structure but LinkedList class is using LinkedList (Doubly LinkedList) data structure.
+
+At the time of searching an element, It will start searching from first(Head) node or last node OR the closer one.
+
+**Here Iterators are Fail Fast Iterator.
+
+Constructor:
+-------------
+It has 2 constructors 
+
+1) LinkedList list1 = new LinkedList();
+    It will create a LinkedList object with 0 capacity.
+
+2) LinkedList list2 = new LinkedList(Collection c);
+    Interconversion between the collection
+
+Methods of LinkedList class:
+-------------------------------
+1) void addFirst(Object o)
+2) void addLast(Object o)
+
+3) Object getFirst()
+4) Object getLast()
+
+5) Object removeFirst()
+6) Object removeLast()
+
+
+	   The time complexcity for insertion and deletion is  O(1) The time complexcity for seraching O(n) becuaee it serach the elemnts using node reference. 
+
+====================================================================
+package com.ravi.linked_list;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+public class LinkedListDemo
+{
+ public static void main(String args[])
+ { 
+      LinkedList<Object> list=new LinkedList<>();
+	  list.add("Ravi");
+	  list.add("Vijay");
+	  list.add("Ravi");
+	  list.add(null);
+	  list.add(42);	  
+	  
+	  System.out.println("1st Position Element is :"+list.get(1));
+
+	  //Iterator interface 
+	  
+	   Iterator<Object> itr = list.iterator();
+	   itr.forEachRemaining(System.out::println); //JDK 1.8
+	  
+	 
+  }
+}
+--------------------------------------------------------------------
+package com.ravi.linked_list;
+
+import java.util.*;
+public class LinkedListDemo1
+{
+      public static void main(String args[])
+      {
+           LinkedList<String> list= new LinkedList<>(); //generic
+           list.add("Item 2");//2  
+           list.add("Item 3");//3  
+           list.add("Item 4");//4  
+           list.add("Item 5");//5  
+           list.add("Item 6");//6  
+           list.add("Item 7");//7  
+           
+           list.add("Item 9"); //10 
+
+           list.add(0,"Item 0");//0
+           list.add(1,"Item 1"); //1
+           
+           
+
+           list.add(8,"Item 8");//8
+		   list.add(9,"Item 10");//9
+            System.out.println(list);
+			
+           
+			list.remove("Item 5"); 
+			  
+			  System.out.println(list);
+			
+			   list.removeLast(); 
+			    System.out.println(list);
+			    
+			     list.removeFirst(); 
+			    System.out.println(list);
+			
+			  list.set(0,"Ajay"); //set() will replace the existing value
+			  list.set(1,"Vijay"); 
+			  list.set(2,"Anand"); 
+			  list.set(3,"Aman");
+			  list.set(4,"Suresh"); 
+			  list.set(5,"Ganesh");
+			  list.set(6,"Ramesh");
+			  list.forEach(x -> System.out.println(x)); 
+					
+			
+			
+      } 
+}
+
+Note : From the above program, It is clear that insertion and deletion in the LinkedList is very efficient due to doubly LinkedList data structure.
+-------------------------------------------------------------------
+package com.ravi.linked_list;
+
+//Methods of LinkedList class
+import java.util.LinkedList;
+public class LinkedListDemo2
+{
+    public static void main(String[] argv) 
+    {
+          LinkedList<String> list = new LinkedList<>();
+          
+          list.addFirst("Ravi");  //    Rahul 
+          list.add("Rahul"); 
+          list.addLast("Anand");	
+          
+          System.out.println(list.getFirst()); 
+          System.out.println(list.getLast()); 
+          
+          list.removeFirst();
+          list.removeLast(); 
+          
+          System.out.println(list); //[Rahul]
+    }
+}
+-------------------------------------------------------------------
+package com.ravi.linked_list;
+//ListIterator methods (add(), set(), remove())
+import java.util.*;
+public class LinkedListDemo3 
+{
+	public static void main(String[] args) 
+	{
+		LinkedList<String> city = new LinkedList<> ();
+         city.add("Kolkata");
+		 city.add("Bangalore");
+		 city.add("Hyderabad");
+		 city.add("Pune");
+		 System.out.println(city);   
+
+		ListIterator<String> lt = city.listIterator();
+
+          while(lt.hasNext())
+		  {
+			String cityName =  lt.next();
+
+			if(cityName.equals("Kolkata"))
+			{
+                 lt.remove();
+			}
+			else if(cityName.equals("Hyderabad"))
+			{
+                 lt.add("Ameerpet");
+			}
+			else if(cityName.equals("Pune"))
+			{
+                 lt.set("Mumbai");
+			}
+		}
+		city.forEach(System.out::println);
+	}
+}
+
+
+Here there is no ConcurrentModificationException because ListIterator is modifying the structure by it's own method hence there is no problem because it is internal structure modification.
+-------------------------------------------------------------------
+package com.ravi.linked_list;
+
+//Insertion, deletion, displaying and exit
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+public class LinkedListDemo4
+{
+ public static void main(String[] args)
+	{
+      List<Integer> linkedList = new LinkedList<>();
+      Scanner scanner = new Scanner(System.in);
+
+        while (true) 
+		{
+          System.out.println("Linked List: " + linkedList); //[]
+          System.out.println("1. Insert Element");
+          System.out.println("2. Delete Element");
+		  System.out.println("3. Display Element");
+          System.out.println("4. Exit");
+          System.out.print("Enter your choice: ");
+
+          int choice = scanner.nextInt();
+          switch (choice) 
+			{
+              case 1: 
+                  System.out.print("Enter the element to insert: ");
+                  int elementToAdd = scanner.nextInt();
+                  linkedList.add(elementToAdd);
+                  break;
+              case 2:
+                  if (linkedList.isEmpty()) 
+					{
+                      System.out.println("Linked list is empty. Nothing to delete.");
+                  } 
+					else 
+					{
+                      System.out.print("Enter the element to delete: ");
+                      int elemenetToDelete = scanner.nextInt();
+                      boolean remove = linkedList.remove(Integer.valueOf(elemenetToDelete));
+        
+                      
+                       if(remove)
+                       {
+                    	   System.out.println("Element "+elemenetToDelete+ " is deleted Successfully" );
+                       }
+                       else
+                       {
+                    	   System.out.println("Element "+elemenetToDelete+" not available is the LinkedList");
+                       }
+                    
+                  }
+                  break;
+				case 3:
+					System.out.println("Elements in the linked list.");
+                    linkedList.forEach(System.out::println);
+				     break;
+              case 4:
+                  System.out.println("Exiting the program.");
+                  scanner.close();
+                  System.exit(0);
+              default:
+                  System.out.println("Invalid choice. Please try again.");
+          }
+      }
+  }
+}
+--------------------------------------------------------------------
+package com.ravi.linked_list;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListDemo5 {
+
+	public static void main(String[] args) 
+	{	
+		
+		
+		List<String> listOfName = Arrays.asList("Ravi","Rahul","Ankit", "Rahul");
+		
+		LinkedList<String> list = new LinkedList<>(listOfName); 
+		list.forEach(System.out::println);
+		            
+		
+		
+		
+	}
+
+}
+--------------------------------------------------------------------
+package com.ravi.linked_list;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+record Product(Integer productId, String productName)
+{
+	
+}
+
+public class LinkedListDemo6 {
+
+	public static void main(String[] args)
+	{
+		List<Product> listOfProduct = new LinkedList<Product>();
+		listOfProduct.add(new Product(1, "ApplePhone"));
+		listOfProduct.add(new Product(2, "MiPhone"));
+		listOfProduct.add(new Product(3, "VivoPhone"));
+		
+		System.out.println("Is list empty :"+listOfProduct.isEmpty());
+		
+		Iterator<Product> iterator = listOfProduct.iterator();
+		iterator.forEachRemaining(prod -> System.out.println(prod.productName().toUpperCase()));
+		
+		
+		String productName = listOfProduct.get(1).productName();
+		System.out.println("1st position product name is :"+productName);
+		
+		
+		
+
+	}
+
+}
+-------------------------------------------------------------------
+import java.util.Deque;
+import java.util.LinkedList;
+
+public class LinkedListDemo6
+{
+    public static void main(String[] args) 
+		{
+        // Create a LinkedList and treat it as a Deque
+        Deque<String> deque = new LinkedList<>();
+
+        
+        deque.addFirst("Ravi");  // Ravi Pallavi 
+        deque.addFirst("Raj");   
+
+        
+        deque.addLast("Pallavi");   
+        deque.addLast("Sweta");
+
+        
+        System.out.println("Deque: " + deque);   
+
+       
+        String first = deque.removeFirst();
+        String last = deque.removeLast();
+
+       
+        System.out.println("Removed first element: " + first);
+        System.out.println("Removed last element: " + last);
+        System.out.println("Updated Deque: " + deque);
+    }
+}
+===================================================================
+Set interface :
+---------------
+Set interface is the sub interface of Collection available from JDK 1.2V
+
+Set interface never accept duplicate elements, Here internally equals(Object obj) method is working from the respective class.
+
+Set interface does not maintain any order (because internally It does not use Array concept, Actually It uses hashing algorithm) 
+
+On Set interface we can't use ListIterator interface.
+
+Set interface supports all the methods of Collection interface, few more methods were added from java 9v.
+-------------------------------------------------------------
+Set interface Hierarchy :
+(07-FEB-25)
+-------------------------------------------------------------
+What is hashing algorithm ?
+-------------------------------
+Hashing algorithm is a technique through which we can search, insert and delete an element in more efficient way in comparison to our classical indexing approach.
+
+Hashing algorithm, internally uses Hashtable data structute, Hashtable data structure internally uses Bucket data structure.
+
+Here elements are inserted by using hashing algorithm so the time complaxity to insert, delete and search an element would be O(1).
+
+
+It is more efficient than our classical array approach which works on the basis of index.
+------------------------------------------------------------
+08-02-2025
+----------
+HashSet<E> [UNORDERED, UNSORTED, NO DUPLICATES]
+------------------------------------------------
+HashSet (UNSORTED, UNORDERED , NO DUPLICATES)
+---------------------------------------------
+public class HashSet<E> extends AbstractSet<E> implements Set<E>, Clonabale, Serializable
+
+It is a predefined class available in java.util package under Set interface and introduced from JDK 1.2V.
+
+It is an unsorted and unordered set.  
+
+It accepts hetrogeneous and homogeneous both kind of data.
+
+*It uses the hashcode of the object being inserted into the Collection. Using this hashcode it finds the bucket location.
+
+It doesn't contain any duplicate elements as well as It does not maintain any order while iterating the elements from the collection.
+
+It can accept one null value.
+
+HashSet methods are not synchronized.
+
+HashSet is used for fast searching operation.
+
+It has constant performance in all the operations like insert, delete and search.
+
+It contains 4 types of constructors :
+
+1) HashSet hs1 = new HashSet();
+    It will create the HashSet Object with default capacity is 16. The default load fator or Fill Ratio is 0.75   (75% of HashSet is filled up then new HashSet Object will be created having double capacity)
+
+2) HashSet hs2 = new HashSet(int initialCapacity);
+    will create the HashSet object with user specified capacity.
+
+
+3) HashSet hs3 = new HashSet(int initialCapacity, float loadFactor);
+    we can specify our own initialCapacity and loadFactor(by default load factor is 0.75)
+
+4) HashSet hs4 = new HashSet(Collection c);
+    Interconversion of Collection.
+------------------------------------------------------------
+//Unsorted, Unordered and no duplicates
+import java.util.*;
+public class HashSetDemo 
+{
+ public static void main(String args[])
+ { 
+	    HashSet<Integer> hs = new HashSet<>();
+		hs.add(67); 
+		hs.add(89);		
+		hs.add(33);
+		hs.add(45);
+		hs.add(12);
+		hs.add(35);
+		hs.add(35);
+		hs.add(null);
+		
+		hs.forEach(num-> System.out.println(num));
+	}
+}
+-------------------------------------------------------------
+import java.util.*;
+public class HashSetDemo1
+{
+      public static void main(String[] argv) 
+      {
+      HashSet<String> hs=new HashSet<>();	  
+	  hs.add("Ravi");  
+	  hs.add("Vijay");
+	  hs.add("Ravi");
+	  hs.add("Ajay");
+	  hs.add("Palavi");
+	  hs.add("Sweta");
+	  hs.add(null);   
+	  hs.add(null);
+	  hs.forEach(str -> System.out.println(str));
+
+      }
+}
+
+Note : While working with HashSet order is un-predictable.
+----------------------------------------------------------------
+package com.nit.collection;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+public class HashSetDemo2 {
+
+	public static void main(String[] args) 
+	{
+		Boolean []arr = new Boolean[5];
+		
+		Set<Object> set = new HashSet<>();
+		arr[0] =  set.add(12);
+		arr[1] =  set.add(12);
+		arr[2] =  set.add(14);
+		arr[3] =  set.add(14);
+		arr[4] =  set.add(15);
+		
+		System.out.println(Arrays.toString(arr));
+		
+		System.out.println("Fetching the Data from Set ");
+		
+		set.forEach(obj -> System.out.println(obj));
+		
+		//Verify whether 15 is available or not ?
+		
+		if(set.contains(15))
+		{
+			System.out.println("15 is available");
+		}
+		else
+		{
+			System.out.println("It is not available");
+		}
+		
+	}
+
+}
+----------------------------------------------------------------
+//add, delete, display and exit
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class HashSetDemo3
+{
+    public static void main(String[] args) 
+		{
+        HashSet<String> hashSet = new HashSet<>();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) 
+		{
+            System.out.println("Options:");
+            System.out.println("1. Add element");
+            System.out.println("2. Delete element");
+            System.out.println("3. Display HashSet");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter your choice (1/2/3/4): ");
+            int choice = scanner.nextInt();
+
+            switch (choice) 
+			{
+                case 1:
+                    System.out.print("Enter the element to add: ");
+                    String elementToAdd = scanner.next();
+                    if (hashSet.add(elementToAdd)) 
+					{
+                        System.out.println("Element added successfully.");
+                    } 
+					else
+					{
+                        System.out.println("Element already exists in the HashSet.");
+                    }
+                    break;
+                    case 2:
+                    System.out.print("Enter the element to delete: ");
+                    String elementToDelete = scanner.next();
+                    if (hashSet.remove(elementToDelete)) 
+					{
+                        System.out.println("Element deleted successfully.");
+                    } 
+					else 
+					{
+                        System.out.println("Element not found in the HashSet.");
+                    }
+                    break;
+                    case 3:
+                    System.out.println("Elements in the HashSet:");
+                    hashSet.forEach(System.out::println);
+                    break;
+                    case 4:
+                    System.out.println("Exiting the program.");
+                    scanner.close();
+                    System.exit(0);
+                    default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+            System.out.println(); 
+        }
+    }
+}
+--------------------------------------------------------------
+package com.nit.collection;
+
+import java.util.HashSet;
+
+public class HashSetDemo4 {
+
+	public static void main(String[] args) 
+	{
+		HashSet<String> hs1 = new HashSet<>();
+		hs1.add(new String("india"));
+		hs1.add(new String("india"));
+		System.out.println(hs1.size());
+		System.out.println(hs1);
+		
+		System.out.println(".............");
+		
+		HashSet<StringBuffer> hs2 = new HashSet<>();
+		hs2.add(new StringBuffer("india"));
+		hs2.add(new StringBuffer("india"));
+		System.out.println(hs2.size());
+		System.out.println(hs2);
+		
+		
+
+	}
+
+}
+
+String size is 1 but StringBuffer size will be 2 because hashCode() and equals(Object obj) methods are not overridden 
+in StringBuffer class.
+----------------------------------------------------------------
+LinkedHashSet<E> [It maintains order]
+---------------------------------------
+public class LinkedHashSet extends HashSet implements Set, Clonable, Serializable
+
+It is a predefined class in java.util package under Set interface and introduced from java 1.4v. 
+
+It is the sub class of HashSet class.
+
+It is an orderd version of HashSet that maintains a doubly linked list across all the elements. 
+
+It internally uses Hashtable and LinkedList data structures.
+
+We should use LinkedHashSet class when we want to maintain an order.
+
+When we iterate the elements through HashSet the order will be unpredictable, while when we iterate the elements through LinkedHashSet then the order will be same as they were inserted in the collection.
+
+It accepts hetrogeneous and null value is allowed.
+
+It has same constructor as HashSet class.
+---------------------------------------------------------------
+import java.util.*;
+public class LinkedHashSetDemo
+{
+ public static void main(String args[])
+	{ 
+		  LinkedHashSet<String> lhs=new LinkedHashSet<>();
+		  lhs.add("Ravi"); 
+		  lhs.add("Vijay");
+		  lhs.add("Ravi");
+		  lhs.add("Ajay");
+		  lhs.add("Pawan");
+		  lhs.add("Shiva");
+		  lhs.add(null);
+		  lhs.add("Ganesh");          
+		  lhs.forEach(str -> System.out.println(str));	   
+	}
+}
+---------------------------------------------------------------
+import java.util.*;
+
+public class LinkedHashSetDemo1 
+{
+    public static void main(String[] args) 
+	{
+       LinkedHashSet<Integer> linkedHashSet = new LinkedHashSet<>();
+
+        linkedHashSet.add(10);
+        linkedHashSet.add(5);
+        linkedHashSet.add(15);
+        linkedHashSet.add(20);
+        linkedHashSet.add(5);
+		
+
+        System.out.println("LinkedHashSet elements: " + linkedHashSet);
+
+        System.out.println("LinkedHashSet size: " + linkedHashSet.size());
+
+        int elementToCheck = 15;
+        if (linkedHashSet.contains(elementToCheck)) 
+		{
+            System.out.println(elementToCheck + " is present in the LinkedHashSet.");
+        } 
+		else 
+		{
+            System.out.println(elementToCheck + " is not present in the LinkedHashSet.");
+        }
+
+        int elementToRemove = 10;
+        linkedHashSet.remove(elementToRemove);
+        System.out.println("After removing " + elementToRemove + ", LinkedHashSet elements: " + linkedHashSet);
+
+              linkedHashSet.clear(); 
+        System.out.println("After clearing, LinkedHashSet elements: " + linkedHashSet); 
+    }
+}
+---------------------------------------------------------------
+SortedSet interface :
+---------------------
+ As we know Collections.sort(List list) method accept list as a parameter so, we can't perform sorting operation by using sort() method on HashSet and LinkedHashSet.
+
+ In order to provide automatic sorting facility, Set interface has provided one more interface i.e SortedSet interface available from JDK 1.2.
+
+ SortedSet interface provided default natural sorting order, default natural sorting order means, if it is number then ascending order but if it is String then alphabetical  OR dictionary order.
+
+ In order to sort the element either in default natural sorting order or user-defined sorting order we are using Comparable or Comparator interfaces.
+ --------------------------------------------------------------
+ 10-02-2025
+ -----------
+Comparable<T> and Comparator<T> interfaces :
+--------------------------------------------
+1) Comparable<T> and Comparator<T> both are functional interfaces.
+
+2) Both are available from JDK 1.2V.
+
+Note : All the Wrapper classes as well as String class implements 
+       from Comparable<T> so, all these classes provides the support of Object comparison using compreTo(T x) method.
+       
+ 
+ *** Difference between Comparable<T> and Comparator<T> --------------------------------------------------------
+ Available in paint Digram [10-FEB-25]
+ 
+
+//Program on Comparable :
+-------------------------
+package com.ravi.comparable;
+
+public record Customer(Integer id, String name) implements Comparable<Customer> 
+{
+	@Override
+	public int compareTo( Customer c2) 
+	{
+	  return this.id - c2.id;  
+	}
+}
+
+package com.ravi.comparable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class CustomerComparable {
+
+	public static void main(String[] args) 
+	{		
+		ArrayList<Customer> listOfCustomers = new ArrayList<>();
+		listOfCustomers.add(new Customer(333, "Scott"));
+		listOfCustomers.add(new Customer(111, "Zuber"));
+		listOfCustomers.add(new Customer(222, "Aryan"));
+		
+		System.out.println("Original Data :");
+		listOfCustomers.forEach(System.out::println);
+		
+		Collections.sort(listOfCustomers);
+		System.out.println("Data After sorting based on the ID :");
+		listOfCustomers.forEach(System.out::println);
+		
+		
+	}
+
+}
+-----------------------------------------------------------------
+package com.ravi.updated_array_25;
+
+import java.util.Arrays;
+
+record Employee(Integer id, String name) implements Comparable<Employee>
+{
+
+	@Override
+	public int compareTo(Employee e2) 
+	{
+		return this.id - e2.id;
+	}	
+		
+}
+
+public class ArrayDemo15 
+{
+	public static void main(String[] args) 
+	{					       
+        Employee []employees = new Employee[3];
+        
+        employees[0] = new Employee(333, "Zuber");
+        employees[1] = new Employee(222, "Aryan");
+        employees[2] = new Employee(111, "Raj");       
+     
+        System.out.println("Original Data :");
+        
+        for(Employee emp : employees)
+        {
+        	System.out.println(emp);
+        }
+      
+        System.out.println("Sorted Data Based On the ID:");
+        
+        Arrays.sort(employees);
+        
+        for(Employee emp : employees)
+        {
+        	System.out.println(emp);
+        }
+        
+	}
+}
+------------------------------------------------------------------
+Limitation of Comparable interface :
+------------------------------------
+We have 3 limitations with Comparable<T>
+-----------------------------------------
+1) We need to modify the BLC class OR Original source code to provide current object support(this keyword), If the BLC class OR 
+source code is provided by any 3rd party developer and we are unable to modify the source code then Comparable will not work.
+
+
+2) We can't write multiple sorting logic, It provides the facility 
+to write only one sorting logic using compareTo(T x) method.
+
+
+3) Comparable is a Functional interface because It contains 
+   only one abstract method but due to the current object requirement (this keyword) we can't use Comparable with Lambda Implementation.
+
+
+In order to avoid the above said limitations, Java software people 
+has introduced Comparator<T> interface.
+
+//Program on Comparator<T>
+---------------------------
+package com.ravi.comparator;
+
+public record Product(Integer id, String name) 
+{
+
+}
+
+
+package com.ravi.comparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class ProductComparator {
+
+	public static void main(String[] args) 
+	{
+		ArrayList<Product> listOfProduct = new ArrayList<Product>();
+		listOfProduct.add(new Product(333, "Laptop"));
+		listOfProduct.add(new Product(111, "Mobile"));
+		listOfProduct.add(new Product(222, "Camera"));
+		
+		System.out.println("Original Data :");
+		listOfProduct.forEach(System.out::println);
+			
+		System.out.println("Sorted Data based on the Id :");
+		Collections.sort(listOfProduct, (p1,p2)-> p1.id().compareTo(p2.id()));		
+		listOfProduct.forEach(System.out::println);
+		
+		
+		System.out.println("Sorted Data based on the Name :");
+		Collections.sort(listOfProduct, (p1,p2)-> p1.name().compareTo(p2.name()));
+		listOfProduct.forEach(System.out::println);
+
+	}
+
+}
+-----------------------------------------------------------------
+How to sort the Integer object in descending order by using Comparator :
+
+package com.ravi.comparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class IntegerDesc {
+
+	public static void main(String[] args) 
+	{
+		ArrayList<Integer> al = new ArrayList<>();
+		al.add(300);
+		al.add(400);
+		al.add(100);
+		al.add(200);
+
+		Collections.sort(al,(i1,i2)-> i2.compareTo(i1));
+		
+		System.out.println(al);
+		
+
+	}
+
+}
+---------------------------------------------------------------
+List intreface sort() method :
+-------------------------------
+List interface has provided sort(Comparator<t> cmp) method introduced from JDK 1.8 which accepts Comapartor as a parameter.
+
+package com.ravi.comparator;
+
+import java.util.ArrayList;
+
+public class NewStyleOfSorting {
+
+	public static void main(String[] args) 
+	{
+		ArrayList<Integer> listOfNumber = new ArrayList<>();
+		listOfNumber.add(56);
+		listOfNumber.add(34);
+		listOfNumber.add(12);
+		listOfNumber.add(9);
+		listOfNumber.add(99);
+		
+		listOfNumber.sort((i1,i2)-> i1.compareTo(i2));
+		
+		System.out.println(listOfNumber);
+		
+		ArrayList<String> listOfCity = new ArrayList<>();		
+		listOfCity.add("Ajmer");
+		listOfCity.add("Mubai");
+		listOfCity.add("Bhubneswar");
+		listOfCity.add("Chennai");
+		listOfCity.add("Hyderabad");
+		
+		listOfCity.sort((s1,s2)-> s2.compareTo(s1));
+		System.out.println(listOfCity);
+
+	}
+}
+-----------------------------------------------------------------
+ 

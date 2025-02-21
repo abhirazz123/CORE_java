@@ -14891,7 +14891,7 @@ public class ThreadName
 }
 
 We are not providing the user-defined names so by default the name of thread would be Thread-0, Thread-1.
-------------------------
+------------------------------------------------------------------
 package com.ravi.basic;
 class Demo extends Thread
 {

@@ -1,5 +1,5 @@
 package JAN_23;
-class NIT extends Thread{
+class NIT2 extends Thread{
 	@Override
 	public void run() {
 		System.out.println("1st Thread");
@@ -15,7 +15,7 @@ class NIT1 extends Thread{
 public class Javaii8 {
 
 	public static void main(String[] args) {
-		NIT Thread = new NIT();
+		NIT2 Thread = new NIT2();
 		NIT1 Thread1 = new NIT1();
 		
 		Thread.start();
